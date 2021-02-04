@@ -7,6 +7,14 @@ th, td {
   padding: 3px;
 }
 
+.tablenoEdge {
+  border: 0px solid black;  
+  border-collapse: collapse;
+  padding: 3px;	
+  font-family: Tisa, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
 .p1 {
   font-family: Tisa, Arial, Helvetica, sans-serif;
   font-size: 12px;
@@ -31,4 +39,11 @@ h2 {
 h3 {
   font-family: Tisa, Arial, Helvetica, sans-serif;
   font-size: 14px;
+}
+
+.weekID {
+	text-align:center; 
+	background-color:linen;
+	font-family: Tisa, Arial, Helvetica, sans-serif;
+	font-size: 12px;
 }
