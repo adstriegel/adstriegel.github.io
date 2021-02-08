@@ -1,0 +1,142 @@
+<title>CSE 30341 - Lecture 02</title>
+
+<link rel="stylesheet" href="../page-style.css">
+
+<body class="p1">
+
+<h1>Daily Handout - CSE 30341 - Lecture 2</h1>
+
+<b>Day:</b> February 9th, 2021
+
+<hline>
+
+<h2>Information Items</h2>
+<p>
+[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
+[<a href="https://adstriegel.github.io/courses/cse30341/spring-2021/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Textbook</a>]
+
+<ul>
+<li>None for today
+</ul>
+
+<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+
+<ul class="p1">
+<li>02-09-21 (Tuesday, 12 PM): <a href="https://forms.gle/LZWY3dDwTzTGd4XdA">Need for Team Assistance Form</a>
+<ul>
+<li>Information will be shared on Tuesday at noon with everyone looking for more team members 
+</ul>
+<li>02-12-21 (Friday, 10 PM): <a href="https://sakai.nd.edu">Quiz 1</a>
+<ul>
+<li>Released on Thursday at 12 PM, Can be done as a pair, completed on Sakai
+</ul>
+<li>02-16-21 (Tuesday, 10 PM): <a href="../project1/project1.html">Project 1</a> - Tuesday, February 16th at 10 PM
+</ul>
+
+<h2>Read Ahead</h2>
+
+<ul>
+<li>Tuesday: Chapters 3, 4
+<li>Thursday: Chapter 5
+</ul>
+
+<h2>Key Points</h2>
+
+<ul>
+<li>What is a process?
+<li>What are the key parts that need to be tracked for a process?
+<li>What is a context shift?
+<li>What are the key states of a process?
+<li>What is the difference betwen the code, heap, and stack?
+<li>What (generally) does PC, SP, and FP mean?
+<li>What is a PCB?
+</ul>
+
+
+<h2>Skills Emphasis</h2>
+
+<ul>
+<li>C - Pointers</li>
+<li>C - List the files in a directory</li>
+<ul>
+<li><a href="https://pubs.opengroup.org/onlinepubs/009695399/functions/readdir_r.html">readdir</a>
+</ul>
+</ul>
+
+<h3>Code - Pointers</h3>
+
+<pre>
+#include &lt;stdio.h&gt;
+
+char bKeepLooping = 1; 
+
+void myFunction (void * pData)
+{
+  int * pNumber = (int *) pData;
+  printf(“%d\n”, pNumber[0]);
+}
+
+int main( int argc, char *argv[] ) 
+{ 
+  int nVal;
+  int * pVal;
+
+  pVal = &amp;nVal;
+  myFunction(pVal);  
+}
+</pre>
+
+<h3>Example Code - readdir</h3>
+
+<pre>
+#include &lt;dirent.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+
+static void lookup(const char *arg)
+{
+    DIR *dirp;
+    struct dirent *dp;
+
+
+    if ((dirp = opendir(".")) == NULL) {
+        perror("couldn't open '.'");
+        return;
+    }
+
+
+    do {
+        errno = 0;
+        if ((dp = readdir(dirp)) != NULL) {
+            if (strcmp(dp->d_name, arg) != 0)
+                continue;
+
+
+            (void) printf("found %s\n", arg);
+            (void) closedir(dirp);
+                return;
+
+
+        }
+    } while (dp != NULL);
+
+
+    if (errno != 0)
+        perror("error reading directory");
+    else
+        (void) printf("failed to find %s\n", arg);
+    (void) closedir(dirp);
+    return;
+}
+
+
+int main(int argc, char *argv[])
+{
+    int i;
+    for (i = 1; i < argc; i++)
+        lookup(argv[i]);
+    return (0);
+}
+</pre>
