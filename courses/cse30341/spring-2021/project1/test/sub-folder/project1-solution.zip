@@ -266,20 +266,10 @@ So, to copy a file carefully, you will need to do something like this:
 
 <h2>Testing</h2>
 
-<b>Test Files:</b> [<a href="test.7z">.7z</a>] [<a href="test.zip">.ZIP</a>]
+A set of files will be provided for download as part of a posted tutorial at the beginning of 
+Week 2.  You are also welcome to share example files / testing scripts via CampusWire.
 
-<p>
-
-Fetch the listed test files and unzip them somwhere in your home directory. The files
-vary in size with some having a high concentration of human readable text with others
-being more of a binary file. Note that the file name and extension may have nothing to
-do with the actual file content.  Examples of a sub-directory and sub-sub-directory are
-included in this distribution as well as a directory with no content. You can manipulate
-read / write access as well using the <tt>chmod</tt> command.   
-<p>
-You are also welcome to share example files / testing scripts via CampusWire. You should 
-test a variety of inputs as well as a variety of user input.
-<p>
+You should test a variety of inputs as well as a variety of user input.
 
 A few errors / cases that you will NOT need to deal with / necessarily test for:
 
@@ -300,62 +290,33 @@ Errors that you will definitely need to think about include:
 <li>What if the file has zero bytes?
 <li>What if the user runs your code with no arguments?
 <li>What if the user flips the arguments (e.g. threshold is listed first and the directory is listed second)?
-<li>What if the sub-directory is empty?
 </ul>
 
 Think for every operation and system call or calculation that you do in your code, is there a way that the operation could 
 go bad?  If it does go bad, how do you protect your code and exit gracefully? Your code should be informative but the
 behavior that should happen is up to you.  
 
-<h2>Submission</h2>
-
-Official submission of your project should be done per the following 
-<a href="../GitHub-Instructions-CSE-30341-01.pdf">instructions</a>.
-
-<p>
-
-In particular, your README.md file should include the following
-components:
-<ul>
-<li>The repository from which the project is being submitted
-<li>The name and e-mails of all group members
-<li>A brief description of the contribution of all group members
-<li>Any commentary or discussions that you wish to share (e.g. this works mostly and here is how far we got)
-</ul>
-
-You will be polled for your GitHub ID during the first weekly quiz.
-<p>
-Your Sakai submission should contain who you are working with and the 
-official repository that you would like us to pull from for your
-group submission. Pulls from the repository will start shortly after the 
-official deadline.    
 
 <h2>Grading</h2>
 
 Your grade will be based on:
 
 <ul>
-<li> Single file text detection. (20%)
-<li> Recursive directory text detection. (40%)
+<li> Single file copy. (20%)
+<li> Recursive directory copy. (40%)
 <li> Correct handling of all error conditions. (30%)
 <li> Good coding style, such as clear formatting, sensible variable names, useful comments, consistent git commits. (10%)
-</ul>
+</li>
 
-The more detailed rubric can be found <a href="Rubric-Project1.txt">here</a>. 
-Note that the TA-defined files and test cases cover a wide variety of malformed
-input or files excepting those cases specifically outlined above. In short, you should
-plan that anything that can fail, will fail, and should be prepared to deal with it.  
-<p>
-Partial credit may be awarded, particularly in cases where your code mostly works (does not
-crash) and  you identify where issues may be occuring in advance via your <tt>README.md</tt> file.   
+A more detailed rubric will be posted by the middle of Week 2 along with additional test cases.
+
 
 <h2>git Commit History</h2>
 
-To encourage you to work on the project regularly (rather than leaving it until the 
-last second) and to practice performing incremental development, part of your grade 
-will be based  on whether or not you have regular and reasonably sized commits in 
-your git log. That is, you will lose points if you commit everything at once near 
-the project deadline.
+To encourage you to work on the project regularly (rather than leaving it until the last second) and to practice performing incremental development, part of your grade will be based 
+on whether or not you have regular and reasonably sized commits in your git log.
+<br>
+That is, you will lose points if you commit everything at once near the project deadline.
 
 
 
