@@ -12,8 +12,8 @@ Text Detection - Single File [20 pts]
   
   For each test case (1 pt each):
     +0.25 pt - Running without crashing, output something
-	+0.25 pt - Close result (plus / minus byte)
-	+0.5  pt - Exact result 
+	+0.5  pt - Close result (plus / minus byte)
+	+0.25 pt - Exact result 
 
 Multi-File / Directory - Text Detection [40 pts]
 
@@ -36,8 +36,8 @@ Multi-File / Directory - Text Detection [40 pts]
   
   For each test case (1 pt each):
     +0.25 pt - Running without crashing, output something
-	+0.25 pt - Close result (plus / minus byte, missing path info)
-	+0.5  pt - Exact result 
+	+0.5  pt - Close result (plus / minus byte, missing path info)
+	+0.25 pt - Exact result 
 
 Correct Error Handling [30 pts]
 
