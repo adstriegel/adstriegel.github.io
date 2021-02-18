@@ -1,0 +1,294 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Project 2: Processes and the Shell</title>
+
+<link rel="stylesheet" type="text/css" href="..//page-style.css">
+</head>
+
+<body class="p1">
+<h1>Project 2: Processes and the Shell</h1>
+
+Please review the <a href="../projects-general.html">General Instructions</a> for assignments.
+
+The goals of this project are:
+<dir>
+<li> To learn the relationship between the kernel, the shell, and user-level programs.
+</li><li> To learn how to employ the Unix process management system calls.
+</li><li> To gain more experience in rigorous error handling.
+</li></dir>
+
+<h2>Essential Requirements</h2>
+
+You will write a program called <tt>ndshell</tt> which is capable of executing, managing, and monitoring 
+user level programs.  This program will be similar in purpose and design to everyday shells 
+like <b>bash</b> or <b>tcsh</b>, although the syntax will be slightly different.  
+<tt>ndshell</tt> will be invoked without any arguments, and will support several different commands
+that include:
+
+<ul>
+<li><b>start</b>: Start a program with the specified command-line arguments
+<li><b>wait</b>: Wait for any child process to exit
+<li><b>waitfor</b>: Wait for a specific child process to exit
+<li><b>run</b>: Start the program and wait for it to complete (e.g. start+waitfor)
+<li><b>kill</b>: Kill a particular child process
+<li><b>bound</b>: Run a time-bound process limited to X seconds (e.g. start+waitfor with a time limit)
+</ul>
+
+<p>
+Your program should print out a prompt like <tt>nd-shell&gt;</tt> when it is ready to accept input.  
+It must read a line of input, accepting several possible commands. It should also keep track of
+running processes as well as information about those processes.  
+</p>
+
+<h3>Command: <tt>start</tt></h3>
+
+<p>
+The <b>start</b> command will start another program with command line arguments, print out the 
+process number of the running program, and then accept another line of input.  For example:
+</p>
+
+<pre>
+ndshell&gt; start cp data.txt copy.txt
+ndshell: process 256 started
+ndshell&gt; 
+</pre>
+
+<h3>Command: <tt>wait</tt></h3>
+
+<p>
+The <b>wait</b> command causes the shell to wait for any child process to exit.  When this happens, 
+you should indicate whether the exit was normal or abnormal, along with the exit code or signal 
+number and name, respectively. Display any errors encountered.  For example:
+</p>
+
+<pre>
+ndshell&gt; wait
+ndshell: process 502 exited normally with status 5
+
+ndshell&gt; wait
+ndshell: process 347 exited abnormally with signal 11: Segmentation fault.
+
+ndshell&gt; wait
+ndshell: No children.
+</pre>
+
+<h3>Command: <tt>waitfor</tt></h3>
+
+<p>
+The <b>waitfor</b> command does the same thing, but waits for a <i>specific</i> child process to exit:
+</p>
+
+<pre>
+ndshell&gt; waitfor 346
+ndshell: process 346 exited normally with status 0
+
+ndshell&gt; waitfor 346
+ndshell: No such process.
+</pre>
+
+<h3>Command: <tt>run</tt></h3>
+
+The <b>run</b> command should combine the behavior of <b>start</b> and <b>waitfor</b>.  <b>run</b> should 
+start a program, possibly with command line arguments, wait for that particular process to finish, and 
+print the exit status.  For example:
+
+<pre>nd-shell&gt; run date
+Mon Jan 19 11:51:57 EST 2009
+ndshell: process 348 exited normally with status 0
+</pre>
+
+<h3>Command: <tt>kill</tt></h3>
+
+The <b>kill</b> command kills a running child process. The shell should send the child process a <tt>SIGKILL</tt> signal, 
+wait for it to exit, and then display the final status.  For example:
+
+<pre>
+ndshell&gt; start sleep 10
+ndshell: process 972 started
+. . .
+ndshell&gt; kill 972 
+ndshell: process 972 exited abnormally with signal 9: Killed.
+</pre>
+
+<h3>Command: <tt>bound</tt></h3>
+
+Finally, <b>bound</b> takes a timeout (in seconds) and a command to run, and then executes the command in the same 
+way as <b>run</b>.  However, if the command takes too long, then the shell should kill the process, wait for it to 
+exit, and then display the final status.  For example:
+<pre>
+ndshell&gt; bound 3 sleep 10
+. . .
+ndshell: process 61 exceeded the time limit, killing it...
+ndshell: process 61 exited abnormally with signal 9: Killed.
+</pre>
+
+<h3>Undefined Commands</h3>
+
+After each command completes, your program must continue to print a prompt and accept another line of input.  The shell should exit with status zero if the command is <b>quit</b> or <b>exit</b> or the input reaches end-of-file.  If the user types a blank line, simply print another prompt and 
+accept a new line of input.  If the user types any other command, the shell should print a reasonable error message:
+
+<pre>
+ndshell&gt; trojan ls -la
+ndshell: unknown command: trojan
+</pre>
+
+<p>
+To keep things simple, your shell doesn't need to deal with arbitrarily long commands.  
+It must accept input lines of up to <b>1000</b> characters, 
+and need handle only up to <b>100</b> distinct words on a line.
+
+<h3>Optional Enhancement: ps</h3>
+
+You can add a <b>ps</b> command lists all known running child processes 
+including the process ID, when the process was launched, and the command for that 
+particular process. For example:
+
+<pre>
+ndshell&gt; start sleep 10
+ndshell: process 972 started
+. . .
+ndshell&gt; start sleep 10
+ndshell: process 973 started
+. . .
+ndshell&gt; ps
+== Process List (2 known processes) ==
+972 02-17-21 18:03 sleep 10
+973 02-17-21 18:04 sleep 10
+</pre>
+
+<h3>Optional: Non-blocking <tt>bound</tt></h3>
+
+You can write <tt>bound</tt> to be non-blocking to a reasonable
+extent, e.g. it sleeps for only a second at a time rather than for the specified
+time.
+
+
+
+
+
+</p><h2>Technical Hints</h2>
+
+You will need to read the manual pages for the following system and library calls, and possibly others:
+
+<pre>fork, execvp, wait, waitpid, kill, exit, signal, printf, fgets, strtok, strcmp, strsignal, atoi, chdir, getwd
+</pre>
+
+Use <tt>fgets</tt> to read one line of text after printing the prompt.  Note that if you <tt>printf</tt> 
+a prompt that has no newline on the end, it will not immediately display.  Call <tt>fflush(stdout)</tt> 
+to force the output.
+
+<p>
+Breaking the input line into separate word is a little tricky, but is only a few lines of code once 
+you get it right.  Call <tt>strtok(line," \t\n")</tt> once to obtain the first word, and 
+then <tt>strtok(0," \t\n")</tt> repeatedly to get the rest, until it returns null.  Declare an array 
+of pointers <tt>char *words[100]</tt>, then, for each word found by <tt>strtok</tt>, save a pointer 
+to the word in <tt>words[i]</tt>.  Keep track of the number of words as <tt>nwords</tt>, then 
+set <tt>words[nwords] = 0;</tt> when you have found the last one.
+</p>
+
+<p>
+Once you have broken the input line into <tt>words</tt>, you can check <tt>words[0]</tt> for the 
+command name, use <tt>strcmp</tt> to check for string equality and <tt>atoi</tt> to convert a string 
+to an integer.
+</p>
+
+<p>
+<b>bound</b> is a little tricky, because you want the shell to stop and wait for either the time 
+to expire, or the child process to exit. The trick here is to catch the <tt>SIGCHLD</tt> signal, 
+which is delivered whenever a child process exits. Use <tt>signal</tt> to set up a function as a 
+signal handler that gets called with <tt>SIGCHLD</tt> is delivered (see the lecture where we discussed
+catching Control-C). Start the child process and go to <tt>sleep</tt>.  If the signal arrives while 
+you are sleeping, the sleep system call will be interrupted and return an error indicating that.
+</p>
+
+<p>
+Make sure to stop if <tt>fgets</tt> returns null, indicating end-of-file.  This allows you to run 
+<tt>ndshell</tt> and read commands from a file.  For example, if you create <tt>myscript</tt> with the 
+following content:
+
+</p>
+
+<pre>
+start ls
+wait
+start date
+wait
+</pre>
+
+Then, you can run the shell on that input like this:
+
+<pre>
+./ndshell &lt; myscript
+</pre>
+
+<h2>Testing</h2>
+
+Make sure to test your program on a wide variety of conditions.
+Try running multiple programs simultaneously.  Create some simple programs
+that crash or exit with values other than zero, to make sure that <b>wait</b>
+and <b>run</b> report the correct exit status.
+
+<p>
+Make sure to carefully handle all possible error conditions.  Every system 
+call can fail in a number of ways.  You must cleanly handle all possible 
+errors with a reasonable error message, as discussed in Project 1.  It is up to you 
+to read the man pages carefully and learn what errors are possible.
+</p>
+
+<p>
+Note that some combinations of commands may not be possible.  For instance,
+the <tt>run</tt> command blocks by virtue of doing a <tt>start</tt> and a 
+<tt>waitfor</tt> meaning that it will not be possible to run a <tt>ps</tt>. 
+Similarly, you will not be able to execute a <tt>kill</tt> on something started
+by <tt>run</tt>. One of your tasks is to figure out what combinations might be 
+possible and what might not be possible. 
+</p>
+
+
+
+<h2>Submission</h2>
+
+Official submission of your project should be done per the following 
+<a href="../GitHub-Instructions-CSE-30341-01.pdf">instructions</a>.
+The branch for this project should be <tt>project2</tt>.
+
+<p>
+
+In particular, your <tt>README.md</tt> file should include the following
+components:
+
+<ul>
+<li>The repository from which the project is being submitted
+<li>The name and e-mails of all group members
+<li>A brief description of the contribution of all group members
+<li>A table containing the list of commands and whether or not those commands are blocking (when used correctly)
+<li>Any commentary or discussions that you wish to share (e.g. this works mostly and here is how far we got)
+<li>Any optional components that you chose to implement
+</ul>
+
+<p>
+Your Sakai submission should contain who you are working with and the 
+official repository that you would like us to pull from for your
+group submission. Pulls from the repository will start shortly after the 
+official deadline. 
+</p>
+
+<p>
+Note that optional components are strictly for your own enrichment and do not receive extra points.
+</p>
+
+<h2>Grading</h2>
+
+Your grade will be based on:
+
+<ul>
+<li> Correct functioning of the shell according to the specification.  (50%)
+<li> Correct handling of all possible error conditions. (40%)
+<li> Good coding style, including clear formatting, sensible variable names, and useful comments. (10%)
+</ul>
+
+Similar to Project 1, a more detailed rubric will be posted as the deadline approaches.
+
+
+</body></html>
