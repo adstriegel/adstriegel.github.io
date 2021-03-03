@@ -1,0 +1,38 @@
+Project 2 - Rubric
+
+Note that although each project has 100 points in total, the
+weight of each project differs as defined in the syllabus.
+
+Correct Functioning of the Shell per Specifications [50 pts]
+
+  3 pts - Successfully compiles and creates ndshell via make
+  2 pts - Compiles and does this with -Wall
+  
+  8 pts - start command with varying arguments
+  5 pts - wait command
+  8 pts - waitfor command following a start 
+  6 pts - run command
+  4 pts - kill command
+  10 pts - bound command with varying arguments
+  3 pts - Correctly runs when taking a file as input via <
+  1 pt - Carriage return prompts again for ndshell>
+
+Correct Handling of Error Conditions [40 pts]
+
+  3 pts - Handles undefined commands (ndshell)
+  6 pts - Handles bad command to execute via start, run, bound
+  4 pts - Handles bad inputs to bound (no argument, non-numeric)
+  6 pts - Handles bad inputs to waitfor (no argument, bad PID, non-numeric value)
+  6 pts - Handles bad inputs to kill (no argument, bad PID, non-numeric value)
+  3 pts - Handles crashing programs (seg fault)
+  3 pts - Handles access issues (access not authorized, e.g. cat on a restricted file)
+  9 pts - TA defined error cases
+  
+Documentation / Submission [10 pts]
+
+  1 pt  - Includes a README.md file
+  1 pt  - Proper use of branching with git as specified in instructions
+  2 pts - All group members are identified 
+  2 pts - Contributions of group members are identified 
+  2 pts - Consistent git commits
+  2 pts - Proper coding style / commenting

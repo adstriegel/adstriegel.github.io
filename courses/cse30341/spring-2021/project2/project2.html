@@ -182,7 +182,7 @@ time.
 
 You will need to read the manual pages for the following system and library calls, and possibly others:
 
-<pre>fork, execvp, wait, waitpid, kill, exit, signal, printf, fgets, strtok, strcmp, strsignal, atoi, chdir, getwd
+<pre>fork, execvp, wait, waitpid, kill, exit, signal, printf, fgets, strtok, strcmp, strsignal, atoi
 </pre>
 
 Use <tt>fgets</tt> to read one line of text after printing the prompt.  Note that if you <tt>printf</tt> 
@@ -232,6 +232,23 @@ Then, you can run the shell on that input like this:
 <pre>
 ./ndshell &lt; myscript
 </pre>
+
+<p>
+It is not strictly necessary to keep the output properly unmashed.  Due to how the various 
+processes are scheduled, the child code may run sometimes before the parent code and vice
+versa. Your code should prompt again for ndshell&gt; if a simple carriage return (enter) is 
+pressed. 
+</p>
+
+<p>
+There may also be cases where running multiple processes makes it very difficult to 
+get back proper exit codes.  This is OK and entirely optional to try to correct. Provided
+that your code works well when properly executed, that is what we will be looking to
+check. Note that you will still need to properly handle errors but we will have a fair 
+amount of tolerance for wonky cases that require fairly sophisticated work arounds. Be
+clear in your README.md any specific limitations.
+</p>
+
 
 <h2>Testing</h2>
 
@@ -299,7 +316,7 @@ Your grade will be based on:
 <li> Good coding style, including clear formatting, sensible variable names, and useful comments. (10%)
 </ul>
 
-Similar to Project 1, a more detailed rubric will be posted as the deadline approaches.
+The detailed rubric can be found <a href="Rubric-Project2.txt">here</a>.
 
 </body>
 
