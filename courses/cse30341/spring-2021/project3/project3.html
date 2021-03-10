@@ -1,0 +1,269 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Project 3: Fast, Efficient Redundancy Elimination</title>
+
+<link rel="stylesheet" type="text/css" href="..//page-style.css">
+</head>
+
+<body class="p1">
+<h1>Project 3: Fast, Efficient Redundancy Elimination</h1>
+
+<p>
+<b>Due:</b> Friday, April 9th at 10 PM
+</p>
+
+<p>
+<b>Estimated Time:</b> Approximately 12-18 hours
+</p>
+
+
+<p>
+Please review the <a href="../projects-general.html">General Instructions</a> for assignments.
+</p>
+
+<p>
+The purpose of this project is to experiment with condition variables as well as performance tuning using
+pthreads with a shared object. In addition, you will need to be judicious with system resources so as not
+to overly consume all of the resources on the student machines.
+</p>
+
+<h2>Project Description</h2>
+<p>
+The world has experienced a dramatic transformation in terms of much of the data being accessed on the
+Internet coming through wireless links. In particular, the emergence of rich video has posed considerable
+challenges in terms of scaling network performance. The unfortunate reality though is that there is only a
+fixed amount of wireless spectrum available and we need to use it as efficiently as possible.
+One way to realize improved network efficiency is to identify cases where redundant data is being sent
+over the particular network link. The idea is that an inefficient app will send the same data multiple times
+when the app could have simply cached or saved the content to avoid sending it those multiple times. The
+challenge that one runs into is that while it is relatively easy to capture large volumes of wireless network
+traffic, it can be relatively tedious to capture how much redundancy might exist and more importantly
+how much of that redundancy might be removable (versus say simply running a compression algorithm
+like zip or bzip2).
+</p>
+
+<p>
+Your task is to write a fast, multi-threaded redundancy detector for pre-captured network traffic (via pcap
+files). While this project will be a bit prescriptive in terms of the higher level approach (condition
+variables, pthreads, memory limits), you may elect to use whatever data structures and strategy you deem
+appropriate to maximize performance.
+</p>
+
+You must also be efficient with your code in that you can only use 64 MB or less for your structures that
+help you track redundancy. You may use up to 8 cores but you must gauge whether or not those cores are
+efficiently contributing to your solution performance.
+
+<h2>Input - Packet Capture Files</h2>
+
+<p>
+You will be provided a set of packet capture files as captured by libpcap that can be found in the Project 4
+directory (posted Wednesday evening). Libpcap stands for the library for packet capture and is what 
+underpins tools such as tcpdump,
+Ethereal, and Wireshark. We do ask that you do not go out and capture packets on your own for this
+project.
+</p>
+<p>
+
+You can find information about the libpcap file format at the link below:
+
+<a href="https://wiki.wireshark.org/Development/LibpcapFileFormat">https://wiki.wireshark.org/Development/LibpcapFileFormat</a>
+
+The libpcap file is split into two main parts, the initial (global) header and the individual packet records.
+With the proper includes in your code, you can directly read into these structs as appropriate.
+The initial global header contains the following:
+<pre>
+typedef struct pcap_hdr_s {
+guint32 magic_number; /* magic number */
+guint16 version_major; /* major version number */
+guint16 version_minor; /* minor version number */
+gint32 thiszone; /* GMT to local correction */
+guint32 sigfigs; /* accuracy of timestamps */
+guint32 snaplen; /* max length of captured packets, in octets */
+guint32 network; /* data link type */
+} pcap_hdr_t;
+</pre>
+
+You will only need to pay attention to two specific values:
+
+<ul>
+<li>The magic number is used to tell you whether the system you are on is a Little Endian (Intel) or
+Big Endian (pretty much everything else) system.</li>
+<li>The snaplen tells you the maximum size of captured packets.</li>
+</ul>
+
+After the initial header, each captured packet contains the following information:
+<pre>
+typedef struct pcaprec_hdr_s {
+guint32 ts_sec; /* timestamp seconds */
+guint32 ts_usec; /* timestamp microseconds */
+guint32 incl_len; /* number of octets of packet saved in file */
+guint32 orig_len; /* actual length of packet */
+} pcaprec_hdr_t;
+</pre>
+
+The first two uints are the timestamp. The first is the timestamp in seconds and the second is the
+microsecond component of the timestamp. The incl_len field tells you how much data will follow the
+packet information (ex. 1460 bytes). Hence, every packet entry will always have:
+
+<pre>
+PCAP Header Packet Data
+PCAP Header Packet Data
+</pre>
+
+Each file may then contain a variable number of packets all of which will follow this same format. The
+packet data will be what we are using for checking for redundancy. For the purposes of simplicity for
+redundancy elimination, we will always ignore the first 52 bytes of the packet (for any packet greater than
+64 bytes).
+
+<h2>Detecting Redundancy</h2>
+
+In order to detect redundancy, we will need to take the packet payload (aka what starts after 52 bytes into
+the packet) and then test to see if we can find a match to previously seen content. There are a variety of
+ways to do this but we can think of this problem as a variant of the Aho-Corasick string matching
+problem. In order to keep things somewhat practical, we will ignore any packet data that has a total
+length ( incl_len ) of less than 128 bytes.
+
+For the code, we will check to see if there is a match on the entire packet payload (everything from 
+Byte 52 (zero indexed) onwards). To that end, we will need to find an appropriate hash function 
+(ex. Jenkins hash , Rabin fingerprint, Running XOR). We will take the entire payload and compute a hash of that payload.
+
+From that payload then, we can look into our data structure to see if we have seen that pattern before. If
+we have seen that pattern before, we should note that and tally the amount of redundancy that we have
+seen. 
+
+As we are writing this in C, you will need to either find an appropriate set of open source data
+structures or write your own.  The question for you is which one to use. You will also need to confirm 
+that you have the correct match. While your hash should be reasonably
+good, keep in mind that the hash merely indicates that it is extremely likely that you have a match, not
+necessarily that the match is exact. You should confirm that the contents of the two packet payloads are
+indeed identical.
+
+Think of your logic as something like this:
+
+<ul>
+<li>Is the packet big enough (>= 128 bytes for incl_len)?
+<ul>
+<li>Nope - ignore it
+</ul>
+<li>Compute the hash from bytes 52 until the end of the packet
+<li>Does that hash exist in the data structure?
+<li>If yes, is it an exact match?
+</ul>
+
+<b>Size Constraint:</b> You will have one restriction in that your various data structures can hold only 64 MB
+of packet data. While we would like your code to keep all of your data structures under 64 MB, we will
+trust you to be judicious in your memory usage. Thus, if you decide that the maximum packet size is
+2000 bytes and just use a fixed array to store everything, that would mean that you can hold at most 64
+MB / 2k worth of packets, aka 32,000 packets in your data structure.
+Due to this size constraint, that means you must be able to evict packets from your approach for tracking
+redundancy. You may use whatever strategy you deem appropriate for removing a packet to make space
+for a new packet (or not) as appropriate. One strategy might be to never remove anything from your
+cache and just use a First Come, First Come strategy for populating the cache. Another strategy might be
+to randomly evict an existing packet or to flip a coin whether or not you should kick out a packet. The
+choice is yours.
+
+<p>
+<b>Reporting:</b> Your code should report the total detected redundancy in the following terms:
+</p>
+
+<ul>
+<li><b>Hits:</b> How many “hits” were detected? A hit is one case of redundant content.
+<li><b>Savings:</b> How much could be saved via redundancy elimination? This represents how much content was detected as redundant as a percentage of the total data that has been processed (ex. 2.02% saved from 103.54MB).
+</ul>
+
+Note that your strategy / approach may impact these numbers when the size of the input file gets big
+enough. Your results should be consistent for small file sizes but may vary for larger files when eviction
+and strategy come into play.
+
+<h2>Multi-Threading</h2>
+
+Although there is some work to get the redundancy detection mechanism working, the real challenge
+comes from trying to make this code run fast. The goal is to try to process as many packets as possible
+while still staying “correct” in terms of the output. For this project, there are only a few mandated design
+constraints (outside of the size constraint):
+
+<ul>
+<li>You must use a producer / consumer queue with condition variables. Your producers are the
+threads that read the file(s) and the consumers are the ones that check to see if there is redundancy
+in that particular packet.
+<li>You must try to keep a rough semblance of order in terms of checking for redundancy. That
+means that you cannot start processing files 1 and 2 in parallel, you must do all of file 1 first and
+then you can move onto file 2.
+<li>You must be judicious in terms of just how much of the file that you load. You should not just
+load everything from the file into memory and call it good.
+</ul>
+
+For everything else, it is up to you how you want to design the system. You can have just a single thread
+that reads in data from the files or multiple threads. You can have a single thread that does the packet
+processing to reduce concurrency issues. It is up to you, just make sure there is a producer / consumer
+queue linkage between the thread(s) doing file I/O (reading the pcap files) and the thread(s) doing
+redundancy computation(s).
+
+Program invocation should take in several arguments, the number of threads
+that can be used and the various files to be processed in order by the system. You may presume that the
+number of files to process is limited to 10 or less. For the case where the number of threads is not 
+specified, you should use your optimal value. You should mandate a minimum number of two threads to 
+allow for at least one producer and one consumer thread (you may ignore the main thread).
+
+<pre>
+% ./threadedRE -thread 3 test.pcap test.pcap
+Welcome to Project 4 - ThreadedRE by Prof. Striegel
+Now operating in Level 1 mode - full payload detection
+Threads Allowed: 3
+Allocating 1 thread to file I/O, 2 threads to processing
+Files to process: test.pcap test.pcap
+Results:
+1.5 MB processed
+256 hits
+50% redundancy detected
+%
+</pre>
+
+We will provide several example pcap files for testing / validation purposes in Sakai for
+the project. A simple test case to ensure that your code is working correctly is to play the same file
+multiple times where the file itself and the data all fit within the 64MB constraint (ex. Test.pcap listed
+twice).
+
+<h2>Grading</h2>
+
+Your grade will be based on:
+
+<ul>
+<li>Correct functioning of the shell according to the specification. (60%)
+<ul>
+<li>Your program should demonstrate a notable speedup when changing between the minimum number of threads and your optimal number of threads.
+<li>Your program should use close to 64MB or less of memory in terms of your total amount consumed by your various data structures.
+<li>Your program should give predictable, correct results for the test cases (small file repeated multiple times).
+</ul>
+<li>Performance-based according to the following two metrics: (10%)
+<ul>
+<li>Speed - Make your code as fast as possible (max 10 threads)
+<li>Efficient - Minimum amount of CPU time
+<li>We will run your code three times each across four different input combinations of files and levels (all files staged in /tmp). Seg faults, deadlock, or wildly incorrect values will
+result in a time of the worst performer times two being assigned for that data point. In other words, better to be correct than fast.
+<li>We will only test your selected optimal thread setting.
+<li>Points will be awarded based on the decile of performance (place in the top 10% - get 100%).
+</ul>
+<li>Robustness (10%)
+<ul>
+<li>Your code should correctly prevent / protect in the case of user errors. You may put reasonable limits on various parameter values.
+<li>Your code should tolerate bad or malformed input files (ignore, stop, etc.).
+</ul>
+<li>Performance Testing (10%)
+<ul>
+<li>Documented and shared results in your README file with regards to performance using different numbers of threads.
+<li>Documented and shared results with varying tcpdump files.
+</ul>
+<li>Documentation (20%)
+<ul>
+<li>Well documented comments and excellent use of variable naming (10%)
+<li>Documentation in your README describing your solution approach and rationale (10%)
+</ul>
+</ul>
+
+The detailed rubric will be posted on Wednesday, March 24th, the day after the mid-term exam.  
+
+</body>
+
+</html>
