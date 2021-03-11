@@ -50,7 +50,7 @@ variables, pthreads, memory limits), you may elect to use whatever data structur
 appropriate to maximize performance.
 </p>
 
-You must also be efficient with your code in that you can only use 64 MB or less for your structures that
+You must also be efficient with your code in that you can only use 256 MB or less for your structures that
 help you track redundancy. You may use up to 8 cores but you must gauge whether or not those cores are
 efficiently contributing to your solution performance.
 
@@ -59,9 +59,8 @@ efficiently contributing to your solution performance.
 <p>
 You will be provided a set of packet capture files as captured by libpcap that can be found in the Project 4
 directory (posted Wednesday evening). Libpcap stands for the library for packet capture and is what 
-underpins tools such as tcpdump,
-Ethereal, and Wireshark. We do ask that you do not go out and capture packets on your own for this
-project.
+underpins tools such as tcpdump, Ethereal, and Wireshark. We do ask that you do not go out and capture 
+packets on your own for this project.
 </p>
 <p>
 
@@ -72,33 +71,36 @@ You can find information about the libpcap file format at the link below:
 The libpcap file is split into two main parts, the initial (global) header and the individual packet records.
 With the proper includes in your code, you can directly read into these structs as appropriate.
 The initial global header contains the following:
+
 <pre>
-typedef struct pcap_hdr_s {
-guint32 magic_number; /* magic number */
-guint16 version_major; /* major version number */
-guint16 version_minor; /* minor version number */
-gint32 thiszone; /* GMT to local correction */
-guint32 sigfigs; /* accuracy of timestamps */
-guint32 snaplen; /* max length of captured packets, in octets */
-guint32 network; /* data link type */
+typedef struct pcap_hdr_s 
+{
+  guint32 magic_number;  /* magic number */
+  guint16 version_major; /* major version number */
+  guint16 version_minor; /* minor version number */
+  gint32 thiszone;       /* GMT to local correction */
+  guint32 sigfigs;       /* accuracy of timestamps */
+  guint32 snaplen;       /* max length of captured packets, in octets */
+  guint32 network;       /* data link type */
 } pcap_hdr_t;
 </pre>
 
 You will only need to pay attention to two specific values:
 
 <ul>
-<li>The magic number is used to tell you whether the system you are on is a Little Endian (Intel) or
-Big Endian (pretty much everything else) system.</li>
+<li>The magic number is used to tell you whether the system you are on is a Little Endian (Intel) or Big Endian (pretty much everything else) system.</li>
 <li>The snaplen tells you the maximum size of captured packets.</li>
 </ul>
 
 After the initial header, each captured packet contains the following information:
+
 <pre>
-typedef struct pcaprec_hdr_s {
-guint32 ts_sec; /* timestamp seconds */
-guint32 ts_usec; /* timestamp microseconds */
-guint32 incl_len; /* number of octets of packet saved in file */
-guint32 orig_len; /* actual length of packet */
+typedef struct pcaprec_hdr_s 
+{
+  guint32 ts_sec;   /* timestamp seconds */
+  guint32 ts_usec;  /* timestamp microseconds */
+  guint32 incl_len; /* number of octets of packet saved in file */
+  guint32 orig_len; /* actual length of packet */
 } pcaprec_hdr_t;
 </pre>
 
@@ -151,11 +153,11 @@ Think of your logic as something like this:
 <li>If yes, is it an exact match?
 </ul>
 
-<b>Size Constraint:</b> You will have one restriction in that your various data structures can hold only 64 MB
-of packet data. While we would like your code to keep all of your data structures under 64 MB, we will
+<b>Size Constraint:</b> You will have one restriction in that your various data structures can hold only 256 MB
+of packet data. While we would like your code to keep all of your data structures under 256 MB, we will
 trust you to be judicious in your memory usage. Thus, if you decide that the maximum packet size is
-2000 bytes and just use a fixed array to store everything, that would mean that you can hold at most 64
-MB / 2k worth of packets, aka 32,000 packets in your data structure.
+2000 bytes and just use a fixed array to store everything, that would mean that you can hold at most 256
+MB / 2k worth of packets, aka 128,000 packets in your data structure.
 Due to this size constraint, that means you must be able to evict packets from your approach for tracking
 redundancy. You may use whatever strategy you deem appropriate for removing a packet to make space
 for a new packet (or not) as appropriate. One strategy might be to never remove anything from your
@@ -222,7 +224,7 @@ Results:
 
 We will provide several example pcap files for testing / validation purposes in Sakai for
 the project. A simple test case to ensure that your code is working correctly is to play the same file
-multiple times where the file itself and the data all fit within the 64MB constraint (ex. Test.pcap listed
+multiple times where the file itself and the data all fit within the 256 MB constraint (ex. Test.pcap listed
 twice).
 
 <h2>Grading</h2>
@@ -233,17 +235,19 @@ Your grade will be based on:
 <li>Correct functioning of the shell according to the specification. (60%)
 <ul>
 <li>Your program should demonstrate a notable speedup when changing between the minimum number of threads and your optimal number of threads.
-<li>Your program should use close to 64MB or less of memory in terms of your total amount consumed by your various data structures.
+<li>Your program should use close to 256 MB or less of memory in terms of your total amount consumed by your various data structures.
+<li>Your code should use at most 8 active threads in its optimal case (I/O + computation).  The main thread will not count against that limit provided that the main thread only starts threads and joins threads.
 <li>Your program should give predictable, correct results for the test cases (small file repeated multiple times).
 </ul>
 <li>Performance-based according to the following two metrics: (10%)
 <ul>
-<li>Speed - Make your code as fast as possible (max 10 threads)
-<li>Efficient - Minimum amount of CPU time
-<li>We will run your code three times each across four different input combinations of files and levels (all files staged in /tmp). Seg faults, deadlock, or wildly incorrect values will
-result in a time of the worst performer times two being assigned for that data point. In other words, better to be correct than fast.
+<li>Speed - Make your code as fast as possible (max 8 threads - I/O + computation)
+<li>Redundancy Detected - Have your code detect as much redundancy as possible (max 256MB memory)
+<li>We will run your code three times each across four different input combinations of files and levels (all files staged in /tmp). Seg faults, deadlock, or 
+wildly incorrect values will result in a time of the worst performer times two being assigned for that data point.  If your redundancy
+measurements are wildly off, you will receive a value of 0% redundancy detected. In other words, better to be correct than fast.
 <li>We will only test your selected optimal thread setting.
-<li>Points will be awarded based on the decile of performance (place in the top 10% - get 100%).
+<li>Points will be awarded based on the quartile of performance (place in the top 25% - get 100%).
 </ul>
 <li>Robustness (10%)
 <ul>
