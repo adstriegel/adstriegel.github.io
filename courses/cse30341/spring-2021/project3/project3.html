@@ -28,6 +28,12 @@ pthreads with a shared object. In addition, you will need to be judicious with s
 to overly consume all of the resources on the student machines.
 </p>
 
+<h2>Errata</h2>
+
+<ul>
+<li>The initial skip length has been adjusted from 52 to 54 bytes.
+</ul>
+
 <h2>Project Description</h2>
 <p>
 The world has experienced a dramatic transformation in terms of much of the data being accessed on the
@@ -115,20 +121,20 @@ PCAP Header Packet Data
 
 Each file may then contain a variable number of packets all of which will follow this same format. The
 packet data will be what we are using for checking for redundancy. For the purposes of simplicity for
-redundancy elimination, we will always ignore the first 52 bytes of the packet (for any packet greater than
-64 bytes).
+redundancy elimination, we will always ignore the first 54 bytes of the packet (for any packet of size greater 
+than or equal to 128 bytes).
 
 <h2>Detecting Redundancy</h2>
 
-In order to detect redundancy, we will need to take the packet payload (aka what starts after 52 bytes into
+In order to detect redundancy, we will need to take the packet payload (aka what starts after 54 bytes into
 the packet) and then test to see if we can find a match to previously seen content. There are a variety of
 ways to do this but we can think of this problem as a variant of the Aho-Corasick string matching
 problem. In order to keep things somewhat practical, we will ignore any packet data that has a total
 length ( incl_len ) of less than 128 bytes.
 
 For the code, we will check to see if there is a match on the entire packet payload (everything from 
-Byte 52 (zero indexed) onwards). To that end, we will need to find an appropriate hash function 
-(ex. Jenkins hash , Rabin fingerprint, Running XOR). We will take the entire payload and compute a hash of that payload.
+Byte 54 (zero indexed) onwards). To that end, we will need to find an appropriate hash function 
+(ex. Jenkins hash, Rabin fingerprint, Running XOR). We will take the entire payload and compute a hash of that payload.
 
 From that payload then, we can look into our data structure to see if we have seen that pattern before. If
 we have seen that pattern before, we should note that and tally the amount of redundancy that we have
@@ -148,7 +154,7 @@ Think of your logic as something like this:
 <ul>
 <li>Nope - ignore it
 </ul>
-<li>Compute the hash from bytes 52 until the end of the packet
+<li>Compute the hash from bytes 54 until the end of the packet
 <li>Does that hash exist in the data structure?
 <li>If yes, is it an exact match?
 </ul>
