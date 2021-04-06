@@ -1,0 +1,74 @@
+Project 3 - Rubric
+
+Note that although each project has 100 points in total, the
+weight of each project differs as defined in the syllabus.
+
+Correct Function [60 pts]
+
+  10 pts - Proper usage of I/O thread, bounded buffer, condition variables, consumer threads 
+  2 pts  - Reporting of redundancy percentage 
+  2 pts  - Reporting of packet count 
+  2 pts  - Reporting of packet size (total) detected
+  4 pts  - Proper computation / reporting of redundancy, packet count, packet size 
+             Track packets < 128 bytes, include in total
+			 Correct results with single run of simple pcap files 
+  5 pts  - Proper operation with one thread (no crash, output results)
+  5 pts  - Proper operation with optimal thread count (no crash, output results)
+  10 pts  - Responsiveness to stating number of threads as an argument
+              Operation with 1, 3, 5, 7 threads   
+  10 pts  - Stays within memory constraint (256MB) approximately 
+              5 pts - stays under limit (roughly)
+              3 pts - uses a significant amount of memory (> 128MB with a large file - 200MB+)
+              2 pts - uses close to the limit of memory (over 200MB with a large file)			  
+  10 pts  - Predictable results (run-time, redundancy, output) 
+              3 pts - Repeat same file three times (Capture1, Capture 2)
+              3 pts - Blend four different files 
+              2 pts - Blend eight different files 
+              2 pts - Same file repeated five times (large)			  
+
+Performance [10 pts]
+   
+  Three runs specified by the TAs of sizeable files
+
+  5 pts - Run-time Performance  
+    Total execution time using the optimal number of threads
+	Measured from starting of code to completion (exit) of code
+	Score will be based on your team quartile
+	  Top quartile = 5 pts, lowest quartile = 1.25 pts
+	  
+  5 pts - Detected redundancy
+    Redundancy detected during the same runs
+	Score will be based on your team quartile
+      Top quartile = 5 pts, lowest quartile = 1.25 pts
+	  
+	Incorrect values, runs that do not stop, seg faults will receive a recorded value 
+	  of 2x worst time, 0% redundancy detected
+  
+Robustness [10 pts]
+
+  2 pts - Protection against malformed / missing inputs with appropriate error output
+  6 pts - Protection against malformed pcap files 
+            Non-pcap files 
+			Pcap files where final packet is shorter than incl_len
+			Pcap files with no data
+  2 pts - Bad inputs / files as defined by TAs
+  
+Performance Testing [10 pts]
+
+  6 pts - Reported run-time with varying numbers of threads            
+			File set 1 (smaller files), different thread count
+			File set 2 (larger files), different thread count
+  4 pts - Reported redundancy using various file sizes / combinations
+ 
+Documentation / Submission [20 pts]
+
+  1 pt  - Includes a README.md file
+  1 pt  - Proper use of branching with git as specified in instructions
+  2 pts - All group members are identified 
+  2 pts - Contributions of group members are identified 
+  2 pts - Consistent git commits
+  2 pts - Proper coding style / commenting
+  
+  4 pts - Proper description of approach to performance (README.md)
+  4 pts - Proper description of approach with regards to thread safety (README.md)
+  2 pts - Identification of optimal thread values (README.md)
