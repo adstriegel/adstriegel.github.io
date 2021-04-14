@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<title>Project 4: File Systems</title>
+
+<link rel="stylesheet" type="text/css" href="..//page-style.css">
+
+</head>
+
+<body class="p1">
+
+<div class=header>
+<h1>Project 4: File Systems</h1>
+</div>
+
+<dir>
+<li> <a href=faq.html>Frequently Asked Questions</a>
+</dir>
+
+<h2>Project Goals</h2>
+
+By undertaking this project, you will:
+<dir>
+<li> learn about the data structures and implementation of a Unix-like filesystem.
+<li> learn about filesystem recovery by implementing a free block bitmap scan.
+<li> develop your expertise in C programming by using structures and unions extensively.
+<li> gain experience in developing and employing a rigorous testing regimen.
+</dir>
+
+<h2>Overview</h2>
+
+In this project, you will build a file system from scratch.
+This filesystem is called <b>SimpleFS</b> and is very similar to the
+Unix inode layer described in the textbook.   You will start
+with a detailed design description of the filesystem, and
+then write the code to implement it.  This will be a challenging
+but fun project!
+<p>
+To allow you to develop and test a new filesystem without
+the worry of damaging existing disks and filesystems, you
+will build SimpleFS using a disk <b>emulator</b>.
+A disk emulator has all the capabilities of a real disk: it loads and
+stores persistent data in blocks.  It even complains
+and crashes like a real disk.  The only difference is that
+there are no real spinning platters: the emulator just stores
+the disk data as a file in an existing file system.
+<p>
+To test your implemention of SimpleFS, we will provide
+you with a <a href="src/index.html">shell</a> that will allow you to 
+create, format, read and write files in your filesystem.  We will also provide you
+with several example file system images so that you won't have
+to start with a clean slate.
+
+<h2>SimpleFS Overview</h2>
+
+The SimpleFS system has three major components: the shell, the filesystem
+itself, and the emulated disk.  Your job is to implement the middle
+component: the filesystem.  The following figure shows how
+the components relate to each other:
+
+<p>
+<img src=images/overview.png>
+<p>
+
+At the top level a user gives typed commands to a shell, instructing
+it to format or mount a disk, and to copy data in and out of the filesystem.
+The shell converts these typed commands into high-level operations
+on the filesystem, such as <tt>fs_format</tt>, <tt>fs_mount</tt>,
+<tt>fs_read</tt>, and <tt>fs_write</tt>.  The filesystem is responsible
+for accepting these operations on files and converting them into simple
+block read and write operations on the emulated disk,
+called <tt>disk_read</tt>, and <tt>disk_write</tt>.
+The emulated disk, in turn, stores all of its data in an image file
+in the filesystem.
+
+<p>
+Your job is to focus on the design and implementation of the filesystem
+itself.  Before getting into the incidental details of the emulation
+system, let's talk about the filesystem in some detail.
+
+<h2>SimpleFS Filesystem Design</h2>
+
+SimpleFS has the following layout on disk.
+It assumes that disk blocks are the common size of 4KB.
+The first block of the disk is a "superblock" that describes the
+layout of the rest of the filesystem.  A certain number of blocks
+following the superblock contain inode data structures.
+Typically, ten percent of the total number of disk blocks
+are used as inode blocks.
+The remaining blocks in the filesystem are used as plain data
+blocks, and occasionally as indirect pointer blocks.
+Here is a picture of a very small SimpleFS image:
+<p>
+<img src=images/fs.png>
+<p>
+Let's examine each of these types of blocks in detail.
+<p>
+The superblock describes the layout of the rest of the filesystem:
+<p>
+<img src=images/super.png>
+<p>
+Each field of the superblock is a 4-byte (32-bit) integer.
+The first field is always the "magic" number FS_MAGIC (0xf0f03410)
+The format routine places this number into the very first bytes
+of the superblock as a sort of filesystem "signature".  When the
+filesystem is mounted, the OS looks for this magic number.
+If it is correct, then the
+disk is assumed to contain a valid filesystem.  If some other number
+is present, then the mount fails, perhaps because the disk is not formatted
+or contains some other kind of data.
+<p>
+The remaining fields in the superblock describe the layout of the filesystem.
+<b>nblocks</b> is the total number of blocks, which should be the same
+as the number of blocks on the disk.  <b>ninodeblocks</b> is the number of
+blocks set aside for storing inodes.  <b>ninodes</b> is the total number
+of inodes in those blocks.  The format routine is responsible for choosing
+<b>ninodeblocks</b>: this should always be 10 percent of <b>nblocks</b>,
+rounding up.  Note that the superblock data structure is quite
+small: only 16 bytes.  The remainder of disk block zero is left unusued.
+<p>
+Each inode looks like this:
+<p>
+<img src=images/inode.png>
+<p>
+Each field of the inode is a 4-byte (32-bit) integer.
+The <b>isvalid</b> field is one if the inode is valid (i.e. has been created)
+and is zero otherwise.  The <b>size</b> field contains the logical size of the
+inode data in bytes.  There are 5 direct pointers to data blocks, and one pointer
+to an indirect data block.  In this context, "pointer" simply means the number
+of a block where data may be found.  A value of zero may be used to indicate
+a null block pointer.  Each inode occupies 32 bytes, so there
+are 128 inodes in each 4KB inode block.
+<p>
+Note that an indirect data block is just a big array of pointers to further
+data blocks.  Each pointer is a 4-byte int, and each block is 4KB, so there
+are 1024 pointers per block.  The data blocks are simply 4KB of raw data.
+<p>
+You are probably noticing that something is missing: a free block bitmap!
+A real filesystem would keep a free block bitmap on disk, recording one
+bit for each block that was available or in use.  This bitmap would be
+consulted and updated every time the filesystem needed to add or remove
+a data block from an inode.
+<p>
+SimpleFS does not have space on disk for a free block bitmap.
+So, SimpleFS requires the operating system designer (i.e. YOU)
+to keep a free block bitmap in memory.  That is, there must be
+an array of integers, one for each block of the disk, noting whether
+the block is in use or available.  When it is necessary to allocate
+ a new block for a file, the system must scan through the array
+to locate an available block.  When a block is freed, it must be
+likewise marked in the bitmap.
+<p>
+What happens when memory is lost?
+Suppose that the user makes some changes to a SimpleFS filesystem,
+and then reboots the system.  Without a free block bitmap, SimpleFS
+cannot tell which blocks are in use and which are free.
+Fortunately, this information can be recovered by scanning the disk.
+Each time that an SimpleFS filesystem is mounted, the system must build
+a new free block bitmap from scratch by scanning through all of the
+inodes and recording which blocks are in use.
+(This is much like performing an <tt>fsck</tt> every time the system boots.)
+<p>
+SimpleFS looks much like the Unix inode layer.
+Each "file" is identified by an integer called an "inumber".
+The inumber is simply an index into the array of inode structures
+that starts in block one.
+When a file is created, SimpleFS chooses the first available
+inumber and returns it to the user.  All further references
+to that file are made using the inumber.
+Using SimpleFS as a foundation, you could easily add another layer
+of software that implements file and directory names.
+However, that will not be part of this assignment.
+<p>
+Now that you know the details of the filesystem to be implemented,
+let's discuss the technical details of the emulation system.
+
+<h2>Disk Emulator</h2>
+
+We provide you with a disk emulator on which to store your filesystem.
+This "disk" is actually stored as one big file in the file system,
+so that you can save data in a "disk image" and then retrieve it later.
+In addition, we will provide you with some sample disk images that you can
+experiment with to test your filesystem.
+<p>
+Just like a real disk, the emulator only allows operations on entire disk blocks
+of 4 KB (DISK_BLOCK_SIZE).  You cannot read or write any smaller unit than than
+that.  The primary challenge of building a filesystem is converting the user's
+requested operations on arbitrary amounts of data into operations on fixed
+block sizes.
+<p>
+The interface to the simulated disk is given in <tt>disk.h</tt>:
+<pre>
+#define DISK_BLOCK_SIZE 4096
+
+int  disk_init( const char *filename, int nblocks );
+int  disk_size();
+void disk_read( int blocknum, char *data );
+void disk_write( int blocknum, const char *data );
+void disk_close();
+</pre>
+<p>
+Before performing any sort of operation on the disk, you must call <b>disk_init</b>
+and specify a (real) disk image for storing the disk data, and the number of blocks
+in the simulated disk.   If this function is called on a disk image that already exists,
+the contained data will not be changed.
+When you are done using the disk, call <b>disk_close</b>
+to release the file.  These two calls are already made for you in the shell, so you
+should not have to change them.
+<p>
+Once the disk is initialized, you may call <b>disk_size()</b> to discover the number
+of blocks on the disk.  As the names suggest, <b>disk_read()</b> and
+<b>disk_write()</b> read and write one block of data on the disk.  Notice that the
+first argument is a block number, so a call to <b>disk_read(0,data)</b> reads the
+first 4KB of data on the disk, and <b>disk_read(1,data)</b> reads the next 4KB block
+of data on the disk.  Every time that you invoke a read or a write, you must ensure
+that <b>data</b> points to a full 4KB of memory.
+<p>
+Note that the disk has a few programming conveniences that a real disk would not.
+A real disk is rather finicky -- if you send it invalid commands, it will
+likely crash the system or behave in other strange ways.  This simulated disk
+is more "helpful."  If you send it an invalid command, it will halt the program
+with an error message.  For example, if you attempt to read or write a disk
+block that does not exist, you will get this error message:
+<pre>
+    ERROR: blocknum (592) is too big!
+    Abort (core dumped)
+</pre>
+
+<h2>Filesystem Interface</h2>
+
+Using the existing simulated disk, you will build a working filesystem.
+Take note that we have already constructed the interface to the filesystem
+and provided some skeleton code.  The interface is given in <tt>fs.h</tt>:
+<pre>
+int  fs_format();
+void fs_debug();
+int  fs_mount();
+
+int  fs_create();
+int  fs_delete( int inumber );
+
+int  fs_getsize( int inumber );
+
+int  fs_read( int inumber, char *data, int length, int offset );
+int  fs_write( int inumber, const char *data, int length, int offset );
+</pre>
+
+The various functions must work as follows:
+
+<dir>
+<li> <b>fs_debug</b> - Scan a mounted filesystem and report on how the inodes and blocks are organized.  If you can write this function, you have won half the battle!  Once you are able to scan and report upon the file system structures, the rest is easy.  Your output from <tt>fs_debug</tt> should be similar to the following:
+<pre>
+superblock:
+    magic number is valid
+    1010 blocks on disk
+    101 blocks for inodes
+    12928 inodes total
+inode 3:
+    size: 45 bytes
+    direct blocks: 103 194
+inode 5:
+    size 81929 bytes
+    direct blocks: 105 109
+    indirect block: 210
+    indirect data blocks: 211 212 213 214 ...
+</pre>
+<li> <b>fs_format</b> - Creates a new filesystem on the disk, destroying any data already present.  Sets aside ten percent of the blocks for inodes, clears the inode table, and writes the superblock.   Returns one on success, zero otherwise.  Note that formatting a filesystem does <b>not</b> cause it to be mounted.  Also, an attempt to format an already-mounted disk should do nothing and return failure.
+<li> <b>fs_mount</b> - Examine the disk for a filesystem.  If one is present, read the superblock, build a free block bitmap, and prepare the filesystem for use.  Return one on success, zero otherwise.  Note that a successful mount is a pre-requisite for the remaining calls.
+<li> <b>fs_create</b> - Create a new inode of zero length.  On success, return the (positive) inumber.  On failure, return zero.  (Note that this implies zero cannot be a valid inumber.)
+<li> <b>fs_delete</b> - Delete the inode indicated by the inumber.  Release all data and indirect blocks assigned to this inode and return them to the free block map.  On success, return one.  On failure, return 0.
+<li> <b>fs_getsize</b> - Return the logical size of the given inode, in bytes.  Note that zero is a valid logical size for an inode!  On failure, return <b>-1</b  >.
+<li> <b>fs_read</b> - Read data from a valid inode.  Copy "length" bytes from the inode into the "data" pointer, starting at "offset" in the inode.  Return the total number of bytes read.  The number of bytes actually read could be smaller than the number of bytes requested, perhaps if the end of the inode is reached.  If the given inumber is invalid, or any other error is encountered, return 0.
+<li> <b>fs_write</b> - Write data to a valid inode.  Copy "length" bytes from the pointer "data" into the inode starting at "offset" bytes.  Allocate any necessary direct and indirect blocks in the process.  Return the number of bytes actually written.  The number of bytes actually written could be smaller than the number of bytes request, perhaps if the disk becomes full.  If the given inumber is invalid, or any other error is encountered, return 0.
+</dir>
+<p>
+It's quite likely that the filesystem module will need a number of global
+variables in order to keep track of the currently mounted filesystem.
+For example, you will certainly need a global variable to keep track
+of the current free block bitmap, and perhaps other items as well.
+You may have heard from other places that global variables are "bad".
+In the context of operating systems, they are common and quite normal.
+
+<h2>Shell Interface</h2>
+
+We have provided for you a simple shell that will be used to exercise your filesystem
+and the simulated disk.  When grading your work, we will use the shell to test your
+code, so be sure to test extensively.
+To use the shell, simply run <tt>simplefs</tt> with the name of a disk image,
+and the number of blocks in that image.  For example, to use the <tt>image.5</tt>
+example given below, run:
+<pre>
+% ./simplefs image.5 5
+</pre>
+Or, to start with a fresh new disk image, just give a new filename and number of blocks:
+<pre>
+% ./simplefs mydisk 25
+</pre>
+Once the shell starts, you can use the <tt>help</tt> command to list the available commands:
+<pre>
+ simplefs> help
+Commands are:
+    format
+    mount
+    debug
+    create
+    delete  &lt;inode&gt;
+    cat     &lt;inode&gt;
+    copyin  &lt;file&gt; &lt;inode&gt;
+    copyout &lt;inode&gt; &lt;file&gt;
+    help
+    quit
+    exit
+</pre>
+
+Most of the commands correspond closely to the filesystem interface.
+For example, <tt>format</tt>, <tt>mount</tt>, <tt>debug</tt>,
+<tt>create</tt> and <tt>delete</tt> call the corresponding functions
+in the filesystem.  Make sure that you call these functions in a sensible
+order.  A filesystem must be formatted once before it can be used.
+Likewise, it must be mounted before being read or written.
+<p>
+The complex commands are <tt>cat</tt>, <tt>copyin</tt>, and <tt>copyout</tt>
+<tt>cat</tt> reads an entire file out of the filesystem and displays it
+on the console, just like the Unix command of the same name.  <tt>copyin</tt>
+and <tt>copyout</tt> copy a file from the local Unix filesystem into your
+emulated filesystem.
+  For example, to copy the dictionary file into inode 10
+in your filesystem, do the following:
+<pre>
+ simplefs> copyin /usr/share/dict/words 10
+</pre>
+Note that these three commands work by making a large number of calls to
+<tt>fs_read</tt> and <tt>fs_write</tt> for each file to be copied.
+
+<h2>Getting Started</h2>
+
+Download the <a href=src>source code</a> and build it with <tt>make</tt>.
+<p>
+Here are some example disk images to get you started.
+The name of each disk image tells you how many blocks are
+in each image.  Each image contains some familiar files
+and documents.  Once you are able to read what is on
+these images, you should move on to writing and changing them.
+
+<dir>
+<li> <a href=image.5>image.5</a>
+<li> <a href=image.20>image.20</a>
+<li> <a href=image.200>image.200</a>
+</dir>
+
+As provided, <tt>shell</tt> and <tt>disk</tt> are fully implemented,
+and <tt>fs</tt> is a skeleton awaiting your work.  We have provided
+the first few lines of <tt>fs_debug</tt> to give you the right idea.
+To get started, build and run <tt>simplefs</tt> and call <tt>debug</tt>
+to read and output the superblock:
+<pre>
+% make
+% ./simplefs image.5 5
+ simplefs> debug
+superblock:
+    5 blocks
+    1 inode blocks
+    128 inodes
+</pre>
+
+<h2>Implementation Notes</h2>
+
+Your job is to implement SimpleFS as described above by filling
+in the implementation of <tt>fs.c</tt>  You do not need to change
+any other code modules.
+We have already created some sample data structures to get you started.
+These can be found in <tt>fs.c</tt>.  To begin with, we have defined
+a number of macros for common constants that you will use.
+Most of these should be self explanatory:
+
+<pre>
+#define DISK_BLOCK_SIZE    4096
+#define FS_MAGIC           0xf0f03410
+#define INODES_PER_BLOCK   128
+#define POINTERS_PER_INODE 5
+#define POINTERS_PER_BLOCK 1024
+</pre>
+
+Note that <tt>POINTERS_PER_INODE</tt> is the number of direct pointers
+in each inode structure, while <tt>POINTERS_PER_BLOCK</tt> is the number
+of pointers to be found in an indirect block.
+<p>
+The superblock and inode structures are
+easily translated from the pictures above:
+
+<pre>
+    struct fs_superblock {
+        int magic;
+        int nblocks;
+        int ninodeblocks;
+        int ninodes;
+    };
+
+    struct fs_inode {
+        int isvalid;
+        int size;
+        int direct[POINTERS_PER_INODE];
+        int indirect;
+    };
+</pre>
+Note carefully that many inodes can fit in one disk block.
+A 4KB chunk of memory containing 128 inodes would look like this:
+<pre>
+    struct fs_inode inodes[128];
+</pre>
+Each indirect block is just a big array of 1024 integers,
+each pointing to another disk block.  So, a 4KB chunk of memory
+corresponding to an indirect block would look liks this:
+<pre>
+    int pointers[1024];
+</pre>
+Finally, each data block is just raw binary data used to store the partial
+contents of a file.  A data block can be specified in C as simply an array
+for 4096 bytes:
+<pre>
+   char data[4096];
+</pre>
+<p>
+A raw 4 KB disk block can be used to represent four different kinds of
+data: a superblock, a block of 128 inodes, an indirect pointer block, or
+a plain data block.  This presents a bit of a software engineering problem:
+how do we transform the raw data returned by <tt>disk_read</tt> into each
+of the four kinds of data blocks?
+<p>
+C provides a nice bit of syntax for exactly this problem.  We can declare
+a <tt>union</tt> of each of our four different data types.  A <tt>union</tt>
+looks like a <tt>struct</tt>, but forces all of its elements to share the
+same memory space.  You can think of a <tt>union</tt> as several different
+types, all overlaidd on top of each other.  You can read more about
+unions on page 147 of the K&amp;R C book.
+<p>
+Here's an example.  We create a <tt>union fs_block</tt> that represents
+the four different ways of interpreting raw disk data:
+<pre>
+union fs_block {
+    struct fs_superblock super;
+    struct fs_inode      inodes[128];
+    int                  pointers[1024];
+    char                 data[4096];
+};
+</pre>
+Note that the size of an <tt>fs_block</tt> union will be exactly 4KB:
+the size of the largest members of the union.  To declare a variable
+of type: <tt>union fs_block</tt>:
+<pre>
+    union fs_block block;
+</pre>
+Now, we may use <tt>disk_read</tt> to load in the raw data from block zero.
+We give <tt>disk_read</tt> the variable <tt>block.data</tt>, which looks
+like an array of characters:
+<pre>
+    disk_read(0,block.data);
+</pre>
+But, we may interpret that data as if it were a <tt>struct superblock</tt> by
+accessing the <tt>super</tt> part of the union.  For example, to extract
+the magic number of the super block, we might do this:
+<pre>
+    x = block.super.magic;
+</pre>
+On the other hand, suppose that we wanted to load disk block 59, assume that it
+is an indirect block, and then examine the 4th pointer.
+Again, we would use <tt>disk_read</tt> to load the raw data:
+<pre>
+    disk_read(59,block.data);
+</pre>
+But then use the <tt>pointer</tt> part of the union like so:
+<pre>
+    x = block.pointer[4];
+</pre>
+The union offers a convenient way of viewing the same data from multiple
+perspectives.  When we load data from the disk, it is just a 4 KB raw chunk
+of data (block.data).  But, once loaded, the filesystem layer knows that
+this data has some structure.  The filesystem layer can view the same data
+from another perspective by choosing another field in the union. (block.super)
+
+<h2>General Advice</h2>
+
+<ol>
+<li> <b>Get Started Early!</b>  This project is roughly the same in scope as Project 3. Don't wait until the last minute.
+<li> <b>Implement the functions roughly in order.</b>  We have deliberately presented the functions of the filesystem interface in order to difficulty.  Implement debug, format, and mount first.  Make sure that you are able to access the sample disk images provided.  Then, perform creation and deletion of inodes without worrying about data blocks.  Implement reading and test again with disk images.  If everything else is working, then attempt fs_write.
+<li> <b>Divide and conquer.</b>  Work hard to factor out common actions into simple functions.  This will dramatically simplify your code.  For example, you will often need to load and save individual inode structures by number.  This involves a fiddly little computation to transform an inumber into a block number, and so forth.  So, make two little functions to do just that:
+<pre>
+void inode_load( int inumber, struct fs_inode *inode ) { ... }
+void inode_save( int inumber, struct fs_inode *inode ) { ... }
+</pre>
+Now, everywhere that you need to load or save an inode structure, call these functions.
+Anytime that find yourself writing very similar code over and over again,
+factor it out into a smaller functio
+<li> <b>Test boundary conditions.</b>  We will certainly test your code by probing
+its boundaries.  Make sure that you test and fix boundary conditions before handing in.
+For example, what happens if <tt>fs_create</tt> discovers that the inode table is full?
+It should cleanly return with an error code.  It certainly should not crash the program
+or mangle the disk!  Think critically about other possible boundary conditions such
+as the end of a file or a full disk.
+<li> <b>Don't worry about performance.</b>  You will be graded on correctness, not performance.  In fact, during the course of this assignment, you will discover that a simple file access can easily erupt into tens or hundreds of single disk accesses.  Understand why this happens, but don't worry about optimization.
+</ol>
+
+<h2>Submission</h2>
+
+<b>This project is due at 10 PM on Friday, May 7th.</b>
+<p>
+To submit your code, use a similar approach to the past three projects.  More detailed grading information will be posted during the week of April 19th.
+
+</body>
+
+</html>
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Project 4 FAQ</title>
+</head>
+
+<link rel="stylesheet" type="text/css" href="..//page-style.css">
+
+</head>
+
+<body class="p1">
+
+<div class=header>
+<h1>Project 4 Frequently Asked Questions</h1>
+</div>
+
+<ol>
+<li> <b>Q: I think that I have debug working.
+Can you give me some sample output so that I can check my answer?</b>
+<p>
+A: Sure, here is what our solution produces for image.20:<p>
+<pre>
+ fs341> debug
+superblock:
+    20 blocks
+    3 inode blocks
+    384 inodes
+inode 2:
+    size: 27160 bytes
+    direct blocks: 4 5 6 7 8
+    indirect block: 9
+    indirect data blocks: 13 14
+inode 3:
+    size: 9546 bytes
+    direct blocks: 10 11 12
+</pre>
+<li> <b>Q: The project description says that format should set aside 10 percent of the blocks for inodes, but the example filesystems have 10 percent plus one block.  Which is correct?</b>
+<p>
+A: Both are correct!  In a real filesystem, the number of inode blocks is chosen
+when the disk is formatted, so an operating system must be prepared to deal
+with whatever number of inode blocks are specified in the superblock.
+However, your format routine should always compute ten percent.
+<p>
+<li> <b>Q: What should happen if the user tries to format a disk that is already mounted?</b>
+<p>
+A: In this case, the format call should do nothing and return failure.
+<p>
+<li> <b> Q: Is it necessary for format to zero out every block on the disk?</b>
+<p>
+A: No. Format should do the minimum work necessary to create a blank
+filesystem.  A blank filesystem should have a valid superblock and no valid inodes.
+It doesn't matter what's in the data blocks, since no inodes refer to them.
+<p>
+Now, if you were really worried about someone stealing your disk
+and then writing their own code to examine the data in blocks that
+were not in use, then a really aggressive filesystem would actually
+fill unused blocks with zeroes during a format or a delete.
+But, you don't have to do this.
+<p>
+<li> <b>Q: Can you delete an inode that is not being used i.e. not valid?</b>
+<p>
+A: A delete on an invalid inode should do nothing and return failure.
+<p>
+</ol>
+
