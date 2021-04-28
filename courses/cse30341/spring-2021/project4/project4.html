@@ -251,7 +251,7 @@ int  fs_write( int inumber, const char *data, int length, int offset );
 The various functions must work as follows:
 
 <dir>
-<li> <b>fs_debug</b> - Scan a mounted filesystem and report on how the inodes and blocks are organized.  If you can write this function, you have won half the battle!  Once you are able to scan and report upon the file system structures, the rest is easy.  Your output from <tt>fs_debug</tt> should be similar to the following:
+<li> <b>fs_debug</b> - Scan a mounted filesystem and report on how the inodes and blocks are organized.  If you can write this function, you have won half the battle!  Once you are able to scan and report upon the file system structures, the rest is easy.  Your output from <tt>fs_debug</tt> should be similar to the following (see <a href="faq.html">the FAQ</a> for an exact result):
 <pre>
 superblock:
     magic number is valid
@@ -260,10 +260,10 @@ superblock:
     12928 inodes total
 inode 3:
     size: 45 bytes
-    direct blocks: 103 194
+    direct blocks: 103
 inode 5:
     size 81929 bytes
-    direct blocks: 105 109
+    direct blocks: 105 109 .. ..
     indirect block: 210
     indirect data blocks: 211 212 213 214 ...
 </pre>
