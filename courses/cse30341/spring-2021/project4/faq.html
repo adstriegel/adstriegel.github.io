@@ -23,7 +23,7 @@ Can you give me some sample output so that I can check my answer?</b>
 <p>
 A: Sure, here is what our solution produces for image.20:<p>
 <pre>
- fs341> debug
+ simplefs> debug
 superblock:
     20 blocks
     3 inode blocks
@@ -52,13 +52,12 @@ A: In this case, the format call should do nothing and return failure.
 <p>
 A: No. Format should do the minimum work necessary to create a blank
 filesystem.  A blank filesystem should have a valid superblock and no valid inodes.
-It doesn't matter what's in the data blocks, since no inodes refer to them.
+It doesn't matter what's in the data blocks, since no inodes refer to them. 
 <p>
 Now, if you were really worried about someone stealing your disk
 and then writing their own code to examine the data in blocks that
 were not in use, then a really aggressive filesystem would actually
 fill unused blocks with zeroes during a format or a delete.
-But, you don't have to do this.
 <p>
 <li> <b>Q: Can you delete an inode that is not being used i.e. not valid?</b>
 <p>
