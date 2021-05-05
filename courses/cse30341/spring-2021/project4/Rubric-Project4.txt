@@ -123,3 +123,6 @@ Documentation / Submission [10 pts]
   2 pts - Consistent git commits
   2 pts - Proper coding style / commenting
   
+See above for the README.md contents (group members, contributions).  Unlike
+Project 3 where there was a report / statistics, there are no performance considerations,
+only correctness.  As such, this README will be much like Project 1 / 2.
