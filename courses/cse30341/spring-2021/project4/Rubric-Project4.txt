@@ -1,4 +1,136 @@
-Project 4 - Rubric [180 pts]
+Project 4 - Rubric [136 pts / 44 pts EC]
+
+The weight of the project is 20% as per the syllabus.
+
+You may earn up to 2% extra credit for your overall grade.
+
+Correct Functionality [88 pts / 27 pts EC]
+
+Correct functionality will be checked using the various commands
+as noted in the project writeup.
+
+15 pts - fs_debug
+	4 pts - Properly checks the superblock
+	  Confirms magic number
+	  Reports blocks on disk
+	  Reports inode blocks
+	  Reports total inodes
+	2 pts - Properly reports at least one inode
+	  Checks valid flag for output 
+	  Reports inode size
+	3 pts - Properly reports direct pointers	  
+	  Reports variations on direct block counts 
+	4 pts - Properly reports indirect (if present)
+	  Reports indirect block (1 pt)
+      Reports variations on indirect blocks (3 pts)	  
+	2 pts - General formatting
+	  Output is well-formatted 
+	  	
+12 pts - fs_format
+    3 pts - Initializes superblock correctly
+	2 pts - Allocates 10% towards inodes
+	1 pt  - Properly "rounds up" on inode block count
+	2 pts - Initializes all inodes correctly	
+	2 pts - New file system is mountable
+	2 pts - Handles various sizes
+    
+15 pts - fs_mount
+  	2 pts - Mounts a clean file system of varying sizes
+	        (No allocated inodes - e.g. freshly formatted)
+    5 pts - Mounts a proper file system of varying sizes
+	        (No indirection present)
+	5 pts - Mounts a proper file system of varying sizes 
+	        (Indirection is present)
+	3 pts - Mounts file systems with > 10% inode blocks 
+	
+15 pts - fs_create
+	2 pts - Allocates the "first" inode on a new filesystem
+	        (No previously allocated inodes - e.g. freshly formatted)
+	3 pts - inodes are properly set up after create
+	        (size is zero, valid is true, no direct blocks allocated)
+	2 pts - New inode persists after restart 
+	        (content properly written to disk)
+    3 pts - Supports multiple, valid create calls	
+	3 pts - Stops allocating when the inode table is full and 
+	         avoids disk mangling / crashing
+	2 pts - Finds next free inode in a populated filesystem
+	         Identifies next free inode block 
+  
+7 pts - fs_delete
+    2 pts - Marks the inode as no longer used	
+	3 pts - Avoids deleting un-allocated inodes 
+	2 pts - Avoids deleting invalid inodes
+  
+4 pts - fs_getsize
+    2 pts - Properly reports the size from an inode
+	2 pts - Properly handles invalid inode requests
+  
+20 pts - fs_read 
+    1 pt - Properly handles a inode size of zero
+	2 pts - Properly handles an inode size of one direct block or less 
+	2 pts - Properly handles an inode size of multiple direct blocks  (4 or less)
+	2 pts - Properly handles an inode size of multiple direct blocks  (5 or less)
+	5 pts - Properly handles an inode spanning direct + indirect (6 or more)
+	5 pts - Properly outputs various file size combinations
+    3 pts - Properly truncates output on the last block 		
+
+
+[EC 27 pts] - fs_write
+  3 pts - Properly handles a write increasing a file to one block or less
+  3 pts - Properly handles a write increasing a file to four blocks or less
+  3 pts - Properly handles a write increasing a file to five blocks or less
+  3 pts - Properly handles a write increasing a file to six blocks or more
+  3 pts - Properly handles truncation in the last block
+  3 pts - Properly handles the disk being full
+  3 pts - Properly handles writing over an existing inode (same size)
+  3 pts - Properly handles writing over an existing inode (smaller size)
+  3 pts - Properly handles writing over an existing inode (bigger size)
+
+Combinations [13 pts / 17 pts EC]
+
+  3 pts - Clean file system (small - 7)
+    format, debug, mount, create, delete, quit
+	
+  3 pts - Clean file system (large - 1519 blocks)
+    format, debug, mount, create, delete, quit
+	
+  7 pts - Pre-made file system (medium - 700 blocks)
+    debug, mount, cat, copyout, delete, copyout, create, create, debug, quit
+  
+[EC 7 pts] - Pre-made file system (medium - 700 blocks)
+    mount, delete, create, create, debug, copyin, copyout, quit
+
+[EC 10 pts] - Pre-made file system (medium - 700 blocks)
+    format, mount, create, create, copyin, copyin, cat, copyout, delete, copyin, copyout, quit 
+
+Error Handling [25 pts]
+
+15 pts -  Properly handles basic logic errors - do not crash, do not mangle
+    Mounting of improper file system
+    Format a mounted disk	
+	Mounting where disk blocks do not agree (superblock vs. actual)
+	Mounting of invalid file system (invalid direct pointers, indirect pointers, etc.)
+	Operations on unmounted file systems
+	Illegal inode accesses (create, delete, cat, copyout)
+
+10 pts - Instructor-defined error sequences    
+
+Documentation / Submission [10 pts]
+
+  1 pt  - Includes a README.md file
+  1 pt  - Proper use of branching with git as specified in instructions
+  2 pts - All group members are identified 
+  2 pts - Contributions of group members are identified 
+  2 pts - Consistent git commits
+  2 pts - Proper coding style / commenting
+  
+See above for the README.md contents (group members, contributions).  Unlike
+Project 3 where there was a report / statistics, there are no performance considerations,
+only correctness.  As such, this README will be much like Project 1 / 2.
+
+=======================================================================================================
+
+Project 4 - Rubric [180 pts] - Original Rubric
 
 The weight of the project is 20% as per the syllabus.
 
