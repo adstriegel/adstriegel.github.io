@@ -1,0 +1,119 @@
+<title>CSE 60641 - Lecture 03</title>
+
+<link rel="stylesheet" href="../page-style.css">
+
+<body class="p1">
+
+<h1>Pre-Review - CSE 60641 - Lecture 3</h1>
+
+<b>Day:</b> August 31st, 2021
+
+<hline>
+
+<h2>Information Items</h2>
+<p>
+[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
+[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+
+<ul>
+<li>Through at least fall break, we will be requiring masks to be worn in class. 
+</ul>
+
+<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+
+<ul class="p1">
+<li>09-03-21 (Friday, 10 PM): Background Survey
+<li>09-03-21 (Friday, 10 PM): Assignment 1
+<ul>
+<li>See announcements on Sakai for guidance
+</ul>
+<li>09-10-21 (Friday, 10 PM): First Paper Search
+</ul>
+
+<h2>Reading Materials - Lectures 3, 4 - Week 2</h2>
+
+<ul>
+<li>Tuesday 
+<ul>
+<li><a href="https://www.classes.cs.uchicago.edu/archive/2020/winter/33100-1/papers/nucleus.pdf">[1]</a> P. Brinch Hansen, "The Nucleus of a Multiprogramming System</a>", Communications of the ACM, 238-242, April 1970.<br>
+<li><a href="https://people.eecs.berkeley.edu/~brewer/cs262/unix.pdf">[2]</a> Dennis M. Ritchie and Ken Thompson, "The UNIX Time-Sharing System", Communications of the ACM, volume 17, number 7, July 1974.<br>
+</ul>
+<li>Thursday
+<ul>
+<li><a href="https://pdos.csail.mit.edu/6.828/2008/readings/engler95exokernel.pdf">[3]</a> Dawson R. Engler, M. Frans Kaashoek, and James O'Toole Jr., "Exokernel: An Operating System Architecture for Application-Level Resource Management", Proc. of the 15th Symposium on Operating Systems Principles, December 1996.<br>
+</ul>
+</ul>
+
+Direct Links to Sakai: 
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/01-Nucleus.pdf">[01]</a> 
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/02-UNIX-TS.pdf">[02]</a><br>
+
+
+<h2>How To Read The Papers</h2>
+
+<br>When reading the papers for the class, take the following approach:
+
+<ul>
+<li>Read the abstract
+<li>Think: What is the problem they are attempting to solve?
+<li>Skim the paper from start to finish fairly quickly noting key sections / information
+<li>Think: How are they solving this problem?
+<li>Read the paper at a reasonable pace noting anything interesting
+<li>Think: Did the paper solve the problem?
+<li>Meet with a group and discuss the paper or raise a discussion item on Campuswire  
+</ul>
+
+<h2>Pre-Review Notes</h2>
+
+Before class, there will be the following materials posted:
+
+<ul>
+<li>A brief overview the day before about what we will be talking about with respect to lecture
+<li>A set of general questions that can be found in the text directly
+<li>A set of questions that go deeper that may not have a definitive answer but are excellent group discussion questions
+</ul>
+
+Consider the following questions that can be found in the papers directly:
+
+<ul>
+<li>Paper 1 - Nucleus
+<ul>
+<li>What is the difference between a program and a process?
+<li>What is an external process?
+<li>What is a message queue?
+<li>What part handles interrupts?
+</ul>
+<li>Paper 2 - UNIX Timesharing
+<ul>
+<li>What is the difference between an image and a process?
+<li>What does fork do? 
+<li>What does pipe do?
+<li>What does wait do?
+<li>Where does the shell look for executables?
+<li>How does the shell run a command?
+<li>What is a core file?
+</ul>
+</ul>
+
+Consider the following questions in a group or by yourself (see above):
+
+<ul>
+<li>Paper 1 - Nucleus
+<ul>
+<li>What is the difference between the message buffer and message queue? Why does it matter?
+<li>What does it mean to write (a file) in Nucleus?
+<li>Explain hierarchy in Nucleus.  
+<li>Are buffers necessarily in the system nucleus?
+</ul>
+<li>Paper 2 - UNIX Timesharing
+<ul>
+<li>The paper notes that locks are not needed, has that held up?
+<li>The paper describes fork, is that the same today as it was back then?
+<li>Why does the paper specifically note the primary focus is on files?
+</ul>
+<li>Both Papers
+<ul>
+<li>Why does the distinction between code and running code matter?
+<li>Is a parent process in UNIX afforded the same control as Nucleus affords parent processes?
+</ul>
+</ul>
