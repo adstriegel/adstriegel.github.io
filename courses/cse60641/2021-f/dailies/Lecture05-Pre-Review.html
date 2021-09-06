@@ -1,0 +1,93 @@
+<title>CSE 60641 - Lecture 05</title>
+
+<link rel="stylesheet" href="../page-style.css">
+
+<body class="p1">
+
+<h1>Pre-Review - CSE 60641 - Lecture 5</h1>
+
+<b>Day:</b>September 7th, 2021
+
+<hline>
+
+<h2>Information Items</h2>
+<p>
+[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
+[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+
+<ul>
+<li>Through at least fall break, we will be requiring masks to be worn in class. 
+</ul>
+
+<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+
+<ul class="p1">
+<li>09-10-21 (Friday, 10 PM): First Paper Search
+<li>09-17-21 (Friday, 10 PM): Course Project Concept
+</ul>
+
+<h2>Reading Materials - Lectures 5, 6 - Week 3</h2>
+
+<ul>
+<li>Tuesday, September 7th 
+<ul>
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/04-LightweightThreads.pdf">[4]</a> D. Stein and D. Shah, "Implementing Lightweight Threads", Proc. of USENIX, San Antonio, TX, June 1992.<br>
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/05-ThreadsBadIdea.pdf">[5]</a> John Ousterhout, "Why Threads are a Bad Idea (for most purposes)", talk given at USENIX Annual Conference, September 1995.<br>
+</ul>
+<li>Thursday, September 9th 
+<ul>
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/06-EventsBadIdea.pdf">[6]</a> Rob von Behren, Jeremy Condit, and Eric Brewer, "Why Events are a Bad Idea (for high-concurrency servers)", Workshop on Hot Topics in Operating Systems, 2003.<br>
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/07-SEDA.pdf">[7]</a> Matt Welsh, David Culler, and Eric Brewer, "SEDA: An Architecture for Well-Conditioned, Scalable Internet Services", ACM Symposium on Operating Systems Principles, 2001.<br>
+</ul>
+
+</ul>
+
+Direct Links to Sakai: <a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/04-LightweightThreads.pdf">[4]</a> <a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/05-ThreadsBadIdea.pdf">[5]</a> <br>
+
+<h2>Pre-Review Notes</h2>
+
+As part of lecture, we will briefly walk through the following concepts:
+
+<ul>
+<li>pThreads - Brief Overview - <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf">see OS3P Chapter 27</a>
+<ul>
+<li>Write simple threaded code in C
+<li>Function Pointers in C / C++
+<li>Typecasting in C / C++
+</ul>
+</ul>
+
+Consider the following questions that can be found in the papers directly or reading background materials:
+
+<ul>
+<li>Paper 4 - Lightweight Processes
+<ul>
+<li>What is a kernel thread versus a user thread?  See <a href="https://www.ibm.com/docs/en/aix/7.1?topic=processes-kernel-threads-user-threads">here</a>
+<li>What do threads share?
+<li>What is separate for each thread?
+<li>What does the OS actually schedule?  
+<li>What are the key states of threads versus LWPs?
+</ul>
+<li>Paper 5 - Threads are a Bad Idea
+<ul>
+<li>What is a race condition?
+<li>What is deadlock?
+<li>Why is debugging threads hard?
+<li>How does event-based programming differ from thread-based programming?
+</ul>
+
+Consider the following questions in a group or by yourself (see above):
+
+<ul>
+<li>Lightweight Threads
+<ul>
+<li>What is the right number of kernel threads?  
+</ul>
+<li>Both Papers
+<ul>
+<li>What does it mean for a library function to be thread safe?
+<li>Who provides support for concurrency primitives (e.g. mutexes)?
+<li>What does the OS actually see when scheduling?
+<li>Who is right?
+</ul>
+</ul>
