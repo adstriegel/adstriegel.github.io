@@ -1,0 +1,97 @@
+<title>CSE 60641 - Lecture 06</title>
+
+<link rel="stylesheet" href="../page-style.css">
+
+<body class="p1">
+
+<h1>Pre-Review - CSE 60641 - Lecture 6</h1>
+
+<b>Day:</b>September 9th, 2021
+
+<hline>
+
+<h2>Information Items</h2>
+<p>
+[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
+[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+
+<ul>
+<li>Through at least fall break, we will be requiring masks to be worn in class. 
+</ul>
+
+<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+
+<ul class="p1">
+<li>09-10-21 (Friday, 10 PM): First Paper Search
+<li>09-17-21 (Friday, 10 PM): Course Project Concept
+</ul>
+
+<h2>Reading Materials - Lectures 5, 6 - Week 3</h2>
+
+<ul>
+<li>Thursday, September 9th 
+<ul>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/06-EventsBadIdea.pdf">[6]</a> Rob von Behren, Jeremy Condit, and Eric Brewer, "Why Events are a Bad Idea (for high-concurrency servers)", Workshop on Hot Topics in Operating Systems, 2003.<br>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/07-SEDA.pdf">[7]</a> Matt Welsh, David Culler, and Eric Brewer, "SEDA: An Architecture for Well-Conditioned, Scalable Internet Services", ACM Symposium on Operating Systems Principles, 2001.<br>
+</ul>
+<li>Tuesday, September 14th
+<ul>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/08-Monitors.pdf">[8]</a> C. A. R. Hoare, "Monitors: An Operating Systems Structuring Concept", Communications of the ACM, 17, 10, October 1974.<br>
+</ul>
+</ul>
+
+Direct Links to Sakai: <a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/06-EventsBadIdea.pdf">[6]</a> <a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/07-SEDA.pdf">[7]</a><br> 
+
+
+<h2>Pre-Review Notes</h2>
+
+As part of lecture, we will briefly walk through the following concepts:
+
+<ul>
+<li>Condition Variables - <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf">see OS3P Chapter 30</a>
+</ul>
+
+Consider the following questions that can be found in the papers directly or reading background materials:
+
+<ul>
+<li>Paper 6 - Events Bad Idea
+<ul>
+<li>What does it mean to block or yield in a thread?  What is the difference?
+<li>What is cooperative multi-tasking? What is pre-emption? How are they different?
+<li>What does it mean to "call" by sending an event? How does a "return" work for events?
+<li>Is there a call-stack for events?  
+</ul>
+<li>Paper 7 - SEDA
+<ul>
+<li>What is a stage in SEDA?
+<li>What is a queue in SEDA?
+<li>What is a well-conditioned service?
+<li>What is introspection?
+<li>What is the purpose of self-tuning in SEDA?
+<li>How are threads and stages related?
+<li>How is the number of threads in a stage controlled?
+<li>Where does batching come in and why is it potentially helpful?
+</ul>
+
+Consider the following questions in a group or by yourself (see above):
+
+<ul>
+<li>6 - Events are a Bad Idea
+<ul>
+<li>What does it mean to just fix events?  Is it tantamount to switching to threads?
+<li>Why does the Duality paper helpful as discussed?
+<li>Are complicated patterns useful / helpful or are they largely academic exercises (Page 21)?
+<li>Will we ever get better synchronization help from the compiler or via run-time analysis?  How big of a help will it be?
+</ul>
+<li>7 - SEDA
+<ul>
+<li>Why can multiple threads be assigned to a stage?
+<li>Why do events scale differently than threads?
+<li>Is it scalability that limited the usage of threads (as SEDA argues) or the difficult in using them (as Ousterhout argues)?
+<li>Why is it important that the file being loaded in the scalability demo (threads vs. events) is already in the cache?
+</ul>
+<li>Both Papers
+<ul>
+<li>Has your opinion changed on who is right on events versus threads? Why?
+</ul>
+</ul>
