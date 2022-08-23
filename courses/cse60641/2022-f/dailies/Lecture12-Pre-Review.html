@@ -1,0 +1,86 @@
+<title>CSE 60641 - Lecture 12</title>
+
+<link rel="stylesheet" href="../page-style.css">
+
+<body class="p1">
+
+<h1>Pre-Review - CSE 60641 - Lecture 12</h1>
+
+<b>Day:</b> September 30th, 2021
+
+<hline>
+
+<h2>Information Items</h2>
+<p>
+[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
+[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+
+<ul>
+<li>Through at least fall break, we will be requiring masks to be worn in class. 
+</ul>
+
+<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+
+<ul class="p1">
+<li>10-01-21 (Friday, 10 PM): Second Paper Search
+<li>10-08-21 (Friday, 10 PM): Project Proposal
+<li>10-15-21 (Friday, 10 PM): Mid-Term Exam (Take Home)
+</ul>
+
+<h2>Reading Materials - Lecture 12 - Week 6, Lecture 13 - Week 7</h2>
+
+<ul>
+<li>Thursday, September 30th
+<ul>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/14-RAID.pdf">[14]</a> Peter Chen, Edward Lee, Garth Gibson, Randy Katz, and David Patterson, "RAID: High-Performance, Reliable Secondary Storage", ACM Computing Surveys, volume 26, number 2, June 1994.<br>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/15-DiffRAID.pdf">[15]</a> Mahesh Balakrishnan, Asim Kadav, Vijayan Prabhakaran, and Dahlia Malkhi, "Differential RAID: Rethinking RAID for SSD Reliability", ACM Transactions on Storage, volume 6, issue 2, July 2010.
+</ul>
+<li>Tuesday, October 5th
+<ul>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/16-AFS.pdf">[16]</a> John Howard, Michael Kazarm Sherri Menees, David Nichols, M. Satyanarayanan, Robert Sidebotham, and Michael West, "Scale and Performance in a Distributed File System", ACM Transactions on Computer Systems, Volume 6, Number 1, February 1988.<br>
+</ul>
+</ul>
+
+Direct Links to Sakai: 
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/14-RAID.pdf">[14]</a> 
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/15-DiffRAID.pdf">[15]</a> 
+
+
+<h2>Pre-Review Notes</h2>
+
+As part of lecture, we will briefly walk through the following concepts:
+
+<ul>
+<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/file-devices.pdf">OS3EP - Devices - Read / Write</a>
+</ul>
+
+Consider the following questions that can be found in the papers directly or reading background materials:
+
+<ul>
+<li>Paper 14 - RAID
+<ul>
+<li>What sequence of events happens on a computer system when doing a read or write from / to persistent storage?
+<li>What is striping? Mirroring?
+<li>What is the differences between RAID 0, RAID 1, and RAID 5?
+<li>How does performance differ between RAID 0, RAID 1, and RAID 5?  Think reliability, read / write speed.
+<li>What is RAID 6?
+<li>What is RAID 50 / 51?
+<li>What is JBOD?
+</ul>
+<li>Paper 15 - DiffRAID
+<ul>
+<li>How does the failure of a flash drive differ from a spinning disk?
+<li>What impact does RAID have, specifically, RAID 5 on writes?
+</ul>
+</ul>
+
+Consider the following questions in a group or by yourself (see above):
+
+<ul>
+<li>Both Papers
+<ul>
+<li>How does performance differ between RAID 5 and RAID 6?
+<li>How would the more common forms of RAID impact file systems such as FFS or LFS?
+<li>What is the read / write impact of a RAID 50 or 51 approach versus say RAID 5 or RAID 0 or RAID 1?
+</ul>
+</ul>

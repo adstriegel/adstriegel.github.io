@@ -1,0 +1,94 @@
+<title>CSE 60641 - Lecture 10</title>
+
+<link rel="stylesheet" href="../page-style.css">
+
+<body class="p1">
+
+<h1>Pre-Review - CSE 60641 - Lecture 10</h1>
+
+<b>Day:</b> September 23rd, 2021
+
+<hline>
+
+<h2>Information Items</h2>
+<p>
+[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
+[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+
+<ul>
+<li>Through at least fall break, we will be requiring masks to be worn in class. 
+</ul>
+
+<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+
+<ul class="p1">
+<li>09-24-21 (Friday, 10 PM): Annotated Bibliography - Course Project 
+<li>10-01-21 (Friday, 10 PM): Second Paper Search
+</ul>
+
+<h2>Reading Materials - Lecture 10 - Week 5, Lecture 11 - Week 6</h2>
+
+<ul>
+<li>Thursday, September 23rd
+<ul>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/11-LFS.pdf">[11]</a> Mendel Rosenblum and John Ousterhout, "The Design and Implementation of a Log Structured File System", Proceedings of the Symposium on Operating Systems Principles, 1991.<br>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/12-F2FS.pdf">[12]</a> Changman Lee, Dongho Sim, Joo-Young Hwang, and Sangyeun Cho "F2FS: A New File System for Flash Storage", Proceedings of the 13th USENIX Conference on File and Storage Technologies (FAST), 2015
+</ul>
+<li>Tuesday, September 28th
+<ul>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/13-ReliabilityIssues.pdf">[13]</a> B. Randell, P. Lee, and P. C. Treleaven. 1978. Reliability Issues in Computing System Design. ACM Comput. Surv. 10, 2 (June 1978), 123-165.
+<li>Note: You may largely skim the paper for reading as we will talk more broadly about fault tolerance.
+</ul>
+</ul>
+
+Direct Links to Sakai: <a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/11-LFS.pdf">[11]</a> <a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/12-F2FS.pdf">[12]</a> 
+
+
+<h2>Pre-Review Notes</h2>
+
+As part of lecture, we will briefly walk through the following concepts:
+
+<ul>
+<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/file-lfs.pdf">OS3EP: Log-based File System</a>
+<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/file-ssd.pdf">OS3EP: Flash (SSD)</a>
+</ul>
+
+Consider the following questions that can be found in the papers directly or reading background materials:
+
+<ul>
+<li>Paper 11 - LFS
+<ul>
+<li>What is an extent?
+<li>What is NVRAM?
+<li>What are segments? What is segment cleaning?
+<li>Why is a right shift better in Figures 3 and 4?
+<li>What is a checkpoint?
+</ul>
+<li>Paper 12 - F2FS
+<ul>
+<li>What is EXT4?
+<li>What is SQLite?
+<li>What is a segment? section? zone?
+<li>What does fsync do?
+<li>What is the KPI for F2FS?
+<li>What is interesting about the varmail benchmark?
+<li>What is WAF?
+</ul>
+</ul>
+
+Consider the following questions in a group or by yourself (see above):
+
+<ul>
+<li>Paper 11 - LFS
+<ul>
+<li>How is LFS related to journaling (see journaling under OS3EP)?
+<li>Is the small-file workload realistic? Why or why not?
+<li>Did LFS offer significantly improved performance? Why or why not?
+</ul>
+<li>Paper 12 - F2FS
+<ul>
+<li>Why does LFS improve performance on random writes?
+<li>What does the use of a hash mean for wildcard or partial searches?
+<li>Why does knowing write-once / read-only matter?
+</ul>
+</ul>

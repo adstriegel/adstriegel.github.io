@@ -1,0 +1,89 @@
+<title>CSE 60641 - Lecture 13</title>
+
+<link rel="stylesheet" href="../page-style.css">
+
+<body class="p1">
+
+<h1>Pre-Review - CSE 60641 - Lecture 13</h1>
+
+<b>Day:</b> October 5th, 2021
+
+<hline>
+
+<h2>Information Items</h2>
+<p>
+[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
+[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+
+<ul>
+<li>Through at least fall break, we will be requiring masks to be worn in class. 
+</ul>
+
+<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+
+<ul class="p1">
+<li>10-08-21 (Friday, 10 PM): Project Proposal
+<li>10-15-21 (Friday, 10 PM): Mid-Term Exam (Take Home)
+<li>Week of 10-18-21 through 10-22-21 - Fall Break
+</ul>
+
+<h2>Reading Materials - Lectures 13, 14 - Week 7</h2>
+
+<ul>
+<li>Tuesday, October 5th
+<ul>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/16-AFS.pdf">[16]</a> John Howard, Michael Kazarm Sherri Menees, David Nichols, M. Satyanarayanan, Robert Sidebotham, and Michael West, "Scale and Performance in a Distributed File System", ACM Transactions on Computer Systems, Volume 6, Number 1, February 1988.<br>
+<ul>
+<li>You may find reading the overview from <a href="<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/dist-afs.pdf">OS3EP - AFS</a> to be more informative
+</ul>
+</ul>
+<li>Thursday, October 7th
+<ul>
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/17-Ceph.pdf">[17]</a>Sage Weil, Scott Brandt, Ethan Miller, Darrell Long, and Carlos Maltzahn, "Ceph: A Scalable, High Performance Distributed File System", Proceedigns of USENIX Operating Systems Design and Implementation, 2006.
+<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/18-GoogleFS.pdf">[18]</a> Sanjay Ghemawat, Howard Gobioff, and Shun-Tak Leung, "The Google File System", Proceedings of the ACM Symposium on Operating Systems Principles (SOSP), 2003.
+<ul>
+<li>This paper can be skimmed as necessary for time constraints.
+</ul>
+</ul>
+</ul>
+
+Direct Links to Sakai: 
+<a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers/16-AFS.pdf">[16]</a> 
+
+
+<h2>Pre-Review Notes</h2>
+
+As part of lecture, we will briefly walk through the following concepts:
+
+<ul>
+<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/dist-nfs.pdf">OS3EP - NFS</a>
+<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/dist-afs.pdf">OS3EP - AFS</a>
+</ul>
+
+Consider the following questions that can be found in the papers directly or reading background materials:
+
+<ul>
+<li>Paper 16 - AFS
+<ul>
+<li>What is Venus? What is Vice?
+<li>What is a callback in the context of AFS?
+<li>When are changes propagated to the server?
+<li>When is the status of a file checked?
+<li>What is a cold cache? Warm cache?
+<li>How does AFS compare to NFS?
+<li>What is a volume in AFS?
+</ul>
+</ul>
+
+Consider the following questions in a group or by yourself (see above):
+
+<ul>
+<li>Paper 16 - AFS
+<ul>
+<li>Can files become de-synchronized with AFS still?
+<li>AFS also provides improves ACL (Access Control Lists).  What are the improvements to ACLs in AFS and why are they helpful?
+<li>If a system crashes or restarts, how does that impact AFS?
+<li>Does AFS preserve POSIX compliance from a file system perspective?
+<li>What would an invocation of an open file under AFS do? How would that contrast with NFS?
+</ul>
+</ul>
