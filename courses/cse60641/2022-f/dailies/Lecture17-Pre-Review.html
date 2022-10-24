@@ -6,39 +6,33 @@
 
 <h1>Pre-Review - CSE 60641 - Lecture 17</h1>
 
-<b>Day:</b> October 26th, 2021
+<b>Day:</b> October 25th, 2022
 
 <hline>
 
 <h2>Information Items</h2>
 <p>
-[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
-[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+[<a href="https://canvas.nd.edu">Canvas</a>]  
+[<a href="https://adstriegel.github.io/courses/cse60641/2022-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
 
-<ul>
-<li>We will continue to require masks through the first week of November.
-</ul>
-
-<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+<h2>Upcoming Due Dates [<a href="../schedule-first.html">Schedule</a>]</h2>
 
 <ul class="p1">
-<li>11-05-21 (Friday, 10 PM): Third Paper Search (Open)
-<li>11-11-21 (In Class): Interim Presentations (6x)
-<li>11-12-21 (Friday, 10 PM): Slides for Interim Presentation
-<li>11-16-21 (In Class): Interim Presentations (3x)
+<li>11-04-22 (Friday, 10 PM): Third Paper Search
+<li>11-11-22 (Friday, 10 PM): Slide Deck - Interim Presentation
 </ul>
 
 <h2>Reading Materials - Lectures 17, 18 - Week 9</h2>
 
 <ul>
-<li>Tuesday, October 26th
+<li>Tuesday, October 25th
 <ul>
-<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers-SecondHalf/19-Working-Set.pdf">[19]</a> Peter Denning, "The Working Set Model for Program Behavior", Communications of the ACM, 1968.<br>
-<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers-SecondHalf/20-WSClock.pdf">[20]</a> Richard Carr and John Hennessy, "WSClock -- A Simple and Effective Algorithm for Virtual Memory Management", Proceedings of the Symposium on Operating Systems Principles, 1981.<br>
+<li>None - Review OS Three Easy Pieces as Necessary
 </ul>
-<li>Thursday, October 28th
+<li>Thursday, October 20th
 <ul>
-<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers-SecondHalf/21-Multics.pdf">[21]</a> A. Bensoussan and R. Daley, "The Multics Virtual Memory: Concepts and Design", Proceedings of the Symposium on Operating Systems Principles, 1969.
+<li><a href="https://canvas.nd.edu/files/1403712/download?download_frd=1">[19]</a> Peter Denning, "The Working Set Model for Program Behavior", Communications of the ACM, 1968.<br>
+<li><a href="https://canvas.nd.edu/files/1403713/download?download_frd=1">[20]</a> Richard Carr and John Hennessy, "WSClock -- A Simple and Effective Algorithm for Virtual Memory Management", Proceedings of the Symposium on Operating Systems Principles, 1981.<br>
 </ul>
 </ul>
 
@@ -47,33 +41,17 @@
 As part of lecture, we will briefly walk through the following concepts:
 
 <ul>
-<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf">OS3EP: Swapping - Policies</a> - Chapter 22
+<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf">OS3EP: Virtual Memory - Paging</a> - Chapter 18
+<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf">OS3EP: Virtual Memory - TLBs</a> - Chapter 19
 </ul>
 
 Consider the following questions that can be found in the papers directly or reading background materials:
 
 <ul>
-<li>Paper 19 - Working Set
-<ul>
-<li>What is the working set?
-<li>What aspects of programs lend themselves to the working set?
-<li>When does the working set matter?
-</ul>
-<li>Paper 20 - WSClock
-<ul>
-<li>Why is the working set hard to realize in practice?
-<li>How is WSClock comparable to LRU?
-</ul>
+<li>What is virtual memory?
+<li>What is a page? frame? swap space?
+<li>What is a TLB?
+<li>What does it mean to have a TLB miss?
+<li>What is a page table?
 </ul>
 
-Consider the following questions in a group or by yourself (see above):
-
-<ul>
-<li>Papers 19, 20 - Working Set / WSClock
-<ul>
-<li>How does context switching impact the concept of the working set?
-<li>How is a TLB related to the working set?
-<li>Does flash reduce the impact of swap policy?
-<li>If we implement a lazy policy, does that remove the need for the concept of the working set?
-</ul>
-</ul>
