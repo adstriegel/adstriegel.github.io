@@ -6,39 +6,33 @@
 
 <h1>Pre-Review - CSE 60641 - Lecture 24</h1>
 
-<b>Day:</b> November 18th, 2021
+<b>Day:</b> November 17th, 2022
 
 <hline>
 
 <h2>Information Items</h2>
 <p>
-[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
-[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+[<a href="https://canvas.nd.edu">Canvas</a>]  
+[<a href="https://adstriegel.github.io/courses/cse60641/2022-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
 
-<ul>
-<li>We will continue to require masks through the end of the semester.
-</ul>
-
-<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+<h2>Upcoming Due Dates [<a href="../schedule-first.html">Schedule</a>]</h2>
 
 <ul class="p1">
-<li>11-19-21: Interim Draft
+<li>11-18-22 (Friday, 10 PM): Interim Draft - Course Project
 </ul>
 
-<h2>Reading Materials - Week 12 - Lecture 24, Week 13 - Lecture 25</h2>
+<h2>Reading Materials - Weeks 12, 13 - Lectures 24, 25</h2>
 
 <ul>
-<li>Thursday, November 18th
+<li>Thursday, November 17th
 <ul>
-<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers-SecondHalf/27-Xen.pdf">[27]</a> P. Barham, D. Dragovic, K. Fraser, S. Hand, T. Harris, A. Ho, R. Neugebauer, I. Pratt, and A. Warfield, "Xen and the Art of Virtualization", 2003.
+<li><a href="https://canvas.nd.edu/files/1403719/download?download_frd=1">[25]</a> Mendel Rosenblum and Tal Garfinkel, "Virtual Machine Monitors: Current Technology and Future Trends", Computer, 2005.<br>
+<li><a href="https://canvas.nd.edu/files/1403720/download?download_frd=1">[26]</a> James E. Smith and Ravi Nair, "The Architecture of Virtual Machines", Computer, 2005.<br>
 </ul>
-<li>Tuesday, November 23rd
+<li>Tuesday, November 22nd
 <ul>
-<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers-SecondHalf/28-RT-Xen.pdf">[28]</a> S. Xi, J. Wilson, C. Lu and C. Gill, "RT-Xen: Towards real-time hypervisor scheduling in Xen," 2011 Proceedings of the Ninth ACM International Conference on Embedded Software (EMSOFT), 2011, pp. 39-48.
-</ul>
-<li>Thursday, November 25th
-<ul>
-<li>No class - Thanksgiving Break
+<li><a href="https://canvas.nd.edu/files/1403721/download?download_frd=1">[27]</a> P. Barham, D. Dragovic, K. Fraser, S. Hand, T. Harris, A. Ho, R. Neugebauer, I. Pratt, and A. Warfield, "Xen and the Art of Virtualization", 2003.
+<li><a href="https://canvas.nd.edu/files/1403722/download?download_frd=1">[28]</a> S. Xi, J. Wilson, C. Lu and C. Gill, "RT-Xen: Towards real-time hypervisor scheduling in Xen," 2011 Proceedings of the Ninth ACM International Conference on Embedded Software (EMSOFT), 2011, pp. 39-48.
 </ul>
 </ul>
 
@@ -47,33 +41,43 @@
 If you did not have a chance prior to the Goldberg paper, it may be worthwhile to review the OS3EP chapter on Virtual Machines:
 
 <ul>
-<li>None
+<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/vmm-intro.pdf">Virtual Machines - OS3EP</a>
 </ul>
 
 Consider the following questions that can be found in the papers directly or reading background materials:
 
 <ul>
-<li>Paper 27 - Xen
+<li>Paper 25 - VMMs - Current and Future Trends
 <ul>
-<li>What is Xen's definition of paravirtualization?
-<li>How does the x86 handle TLB misses?
-<li>What is a hypercall?
-<li>What is a domain?
-<li>What is domain 0?
-<li>How many ring levels does the x86 have?
-<li>What is an I/O ring?
-<li>How are page tables handled in Xen?
+<li>What is a Type 1 VM? Type 2?
+<li>What is a guest operating system?
+<li>What is encapsulation?
+<li>What is total mediation?
+<li>What does the POPF instruction do?
+<li>What is paravirtualization?
+<li>What is a trace cache?
+<li>What is a shadow page table?
+<li>What is a balloon process?
+</ul>
+<li>Paper 26 - Architecture Virtual Machines
+<ul>
+<li>What do the following terms mean: ISA, ABI, API?
+<li>What is a process virtual machine?
+<li>What is interpretation? What is dynamic binary translation?
+<li>What is HLL?
+<li>What is physical partioning versus logical partioning?
 </ul>
 </ul>
 
 Consider the following questions in a group or by yourself (see above):
 
 <ul>
-<li>Paper 27 - Xen
+<li>Both Papers
 <ul>
-<li>Why is time potentially problematic with a VM?
-<li>Why is meeting time constraints hard with a VM?
-<li>Recall the purist / impurist discussion from Goldberg. Now having read several papers, who is right?  Why?
-<li>What are the major differences and similarities between the VMWare approach and Xen?
+<li>Why might migration be an important feature of a virtual machine?
+<li>How is the shadow page table similar or different versus twinning with DThreads?
+<li>Could a VM provide determinism ala DThreads?
+<li>How could VMWare catch and translate a block prior to execution? What mechanism courtesy of the hardware and software help assist with that approach?
+<li>What is more important, isolation or resource sharing?
 </ul>
 </ul>

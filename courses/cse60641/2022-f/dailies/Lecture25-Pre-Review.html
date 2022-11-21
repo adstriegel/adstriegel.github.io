@@ -1,4 +1,4 @@
-<title>CSE 60641 - Lecture 25</title>
+<title>CSE 60641 - Lecture 24</title>
 
 <link rel="stylesheet" href="../page-style.css">
 
@@ -6,50 +6,64 @@
 
 <h1>Pre-Review - CSE 60641 - Lecture 25</h1>
 
-<b>Day:</b> November 23rd, 2021
+<b>Day:</b> November 22nd, 2022
 
 <hline>
 
 <h2>Information Items</h2>
 <p>
-[<a href="https://sakai.nd.edu">Sakai</a>] [<a href="https://campuswire.com/c/G2747E032/feed">CampusWire</a>] 
-[<a href="https://adstriegel.github.io/courses/cse60641/2021-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
+[<a href="https://canvas.nd.edu">Canvas</a>]  
+[<a href="https://adstriegel.github.io/courses/cse60641/2022-f/">Website</a>] [<a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Ref. Textbook</a>]
 
-<ul>
-<li>We will continue to require masks through the end of the semester.
-</ul>
-
-<h2>Upcoming Due Dates [<a href="../schedule.html">Schedule</a>]</h2>
+<h2>Upcoming Due Dates [<a href="../schedule-first.html">Schedule</a>]</h2>
 
 <ul class="p1">
-<li>11-19-21: Interim Draft (may be submitted up to Monday (11-22-21) at 10 PM
+<li>Week of 12-12 to 12-16: Final Project - Oral Exam
+<ul>
+<li>Note that the group final exam must be submitted before the first group member does their oral exam 
+</ul>
+<li>Week of 12-12 to 12-16: Course Project Presentation
+<li>12-12-22 (Monday, 10 PM): Final Course Project Paper (hard deadline)
 </ul>
 
-<h2>Reading Materials - Week Week 13 - Lecture 25</h2>
+<h2>Reading Materials - Weeks 13, 14 - Lectures 25, 26, 27</h2>
 
 <ul>
-<li>Tuesday, November 23rd
+<li>Tuesday, November 22nd
 <ul>
-<li><a href="https://sakailogin.nd.edu/access/content/group/FA21-CSE-60641-01/Papers-SecondHalf/28-RT-Xen.pdf">[28]</a> S. Xi, J. Wilson, C. Lu and C. Gill, "RT-Xen: Towards real-time hypervisor scheduling in Xen," 2011 Proceedings of the Ninth ACM International Conference on Embedded Software (EMSOFT), 2011, pp. 39-48.
+<li><a href="https://canvas.nd.edu/files/1403721/download?download_frd=1">[27]</a> P. Barham, D. Dragovic, K. Fraser, S. Hand, T. Harris, A. Ho, R. Neugebauer, I. Pratt, and A. Warfield, "Xen and the Art of Virtualization", 2003.
+<li><a href="https://canvas.nd.edu/files/1403722/download?download_frd=1">[28]</a> S. Xi, J. Wilson, C. Lu and C. Gill, "RT-Xen: Towards real-time hypervisor scheduling in Xen," 2011 Proceedings of the Ninth ACM International Conference on Embedded Software (EMSOFT), 2011, pp. 39-48.
 </ul>
-<li>Thursday, November 25th
+<li>Thursday, November 24th
 <ul>
-<li>No class - Thanksgiving Break
+<li>No Lecture - Thanksgiving Break
+</ul>
+<li>Tuesday, November 29th
+<ul>
+<li><a href="https://canvas.nd.edu/files/1403723/download?download_frd=1">[29]</a> G.C. Buttazzo, "Rate Monotonic vs. EDF: Judgment Day," Real-Time Systems 29, 5–26 (2005).<br>
+</ul>
+<li>Thursday, December 1st
+<ul>
+<li><a href="https://canvas.nd.edu/files/1403724/download?download_frd=1">[30]</a> P. Pillai and K. G. Shin. 2001, "Real-time dynamic voltage scaling for low-power embedded operating systems," In Proc. of the ACM Symposium on Operating systems Principles (SOSP '01). Association for Computing Machinery, New York, NY, USA, 89–102.
 </ul>
 </ul>
 
 <h2>Pre-Review Notes</h2>
 
-It may be worthwhile to review Multi-Level Feedback from OS3EP:
-
-<ul>
-<li><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf">Multi-Level Feedback Queue</a> - CPU Scheduling via OS3EP
-<li><a href="https://link.springer.com/content/pdf/10.1007%2FBFb0013863.pdf">Tutorial on Real-Time Systems</a>
-</ul>
-
 Consider the following questions that can be found in the papers directly or reading background materials:
 
 <ul>
+<li>Paper 27 - Xen
+<ul>
+<li>What is Xen's definition of paravirtualization?
+<li>How does the x86 handle TLB misses?
+<li>What is a hypercall?
+<li>What is a domain?
+<li>What is domain 0?
+<li>How many ring levels does the x86 have?
+<li>What is an I/O ring?
+<li>How are page tables handled in Xen?
+</ul>
 <li>Paper 28 - RT-Xen / Background
 <ul>
 <li>What does it mean to be a real-time system?
@@ -64,6 +78,13 @@ Consider the following questions that can be found in the papers directly or rea
 Consider the following questions in a group or by yourself (see above):
 
 <ul>
+<li>Paper 27 - Xen
+<ul>
+<li>Why is time potentially problematic with a VM?
+<li>Why is meeting time constraints hard with a VM?
+<li>Recall the purist / impurist discussion from Goldberg. Now having read several papers, who is right?  Why?
+<li>What are the major differences and similarities between the VMWare approach and Xen?
+</ul>
 <li>Paper 28 - RT-Xen
 <ul>
 <li>What is the tradeoff with a lower quantum?
